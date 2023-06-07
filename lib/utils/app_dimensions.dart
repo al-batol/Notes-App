@@ -4,7 +4,12 @@ class AppDimensions {
   static final height = Get.height;
   static final width = Get.width;
 
-  static double responsive(double value) {
+  static double responsiveWidth(double value) {
+    const double baseWidth = 411.0;
+    return value / width * baseWidth;
+  }
+
+  static double responsiveHeight(double value) {
     const double baseWidth = 411.0;
     return value / width * baseWidth;
   }
