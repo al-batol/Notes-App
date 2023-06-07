@@ -10,8 +10,8 @@ class AppDimensions {
   }
 
   static double responsiveHeight(double value) {
-    const double baseWidth = 411.0;
-    return value / width * baseWidth;
+    const double baseHeight = 820.0;
+    return value / height * baseHeight;
   }
 }
 
