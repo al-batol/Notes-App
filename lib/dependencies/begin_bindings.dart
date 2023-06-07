@@ -8,5 +8,4 @@ class BeginBinding extends Bindings {
   void dependencies() {
     Get.lazyPut(() => HomePageController(appRepo: AppRepo(appDatabase: Get.find<AppDatabase>())));
   }
-  
 }
