@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notes_app/data/sql_database.dart';
-import 'package:notes_app/deoendencies/begin_bindings.dart';
+import 'package:notes_app/dependencies/begin_bindings.dart';
 import 'package:notes_app/helper/router_helper.dart';
 
 void main() async {
