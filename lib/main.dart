@@ -4,7 +4,7 @@ import 'package:notes_app/data/sql_database.dart';
 import 'package:notes_app/dependencies/begin_bindings.dart';
 import 'package:notes_app/helper/router_helper.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Get.putAsync(() => AppDatabase().initDatabase());
   runApp(const MyApp());

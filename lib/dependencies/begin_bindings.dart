@@ -6,6 +6,9 @@ import 'package:notes_app/data/sql_database.dart';
 class BeginBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => HomePageController(appRepo: AppRepo(appDatabase: Get.find<AppDatabase>())));
+    Get.lazyPut(
+        () => HomePageController(
+            appRepo: AppRepo(appDatabase: Get.find<AppDatabase>())),
+        fenix: true);
   }
 }

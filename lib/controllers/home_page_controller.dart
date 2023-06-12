@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:notes_app/data/repo.dart';
 import 'package:notes_app/models/note_model.dart';
@@ -12,6 +13,11 @@ class HomePageController extends GetxController {
 
   List<NoteModel> get notes => _notes;
 
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController titleEditing = TextEditingController();
+  final TextEditingController topicEditing = TextEditingController();
+
+  bool onDraggable = false;
   @override
   void onInit() {
     readData();
@@ -24,7 +30,7 @@ class HomePageController extends GetxController {
     _notes.addAll(allNotes.map((e) => NoteModel.fromJson(e)).toList());
   }
 
-  void insertData(String title, String topic) async {
+  Future<void> insertData(String title, String topic) async {
     Map<String, dynamic> note = {
       'title': title,
       'topic': topic,
@@ -49,7 +55,7 @@ class HomePageController extends GetxController {
     }
   }
 
-  void updateDate(String id, String columnName, String newValue) async {
+  Future<void> updateDate(String id, String columnName, String newValue) async {
     await appRepo
         .updateData(SqlQueries.updateDataSql(id, columnName, newValue));
   }
