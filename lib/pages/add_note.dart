@@ -2,14 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notes_app/utils/app_dimensions.dart';
 
-import '../controllers/home_page_controller.dart';
+import 'package:notes_app/controllers/home_page_controller.dart';
+import 'package:notes_app/models/note_model.dart';
 
 class AddNote extends StatelessWidget {
   HomePageController homeCtr = Get.find<HomePageController>();
-  AddNote({Key? key}) : super(key: key);
+  bool willEdit;
+
+  int index;
+
+  AddNote({Key? key, this.willEdit = false, this.index = -1}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (willEdit) {
+      homeCtr.willEditPage(willEdit, index);
+    }
     return Scaffold(
       body: SafeArea(
         child: Form(
@@ -30,19 +38,36 @@ class AddNote extends StatelessWidget {
                       height: 10.0.hp,
                       child: IconButton(
                         onPressed: () async {
-                          if(homeCtr.titleEditing.text.trim().isEmpty && homeCtr.topicEditing.text.trim().isEmpty) {
+                          if (homeCtr.titleEditing.text.trim().isEmpty &&
+                              homeCtr.topicEditing.text.trim().isEmpty) {
                             Get.back();
                           } else {
-                            await homeCtr.insertData(
-                              homeCtr.titleEditing.text,
-                              homeCtr.topicEditing.text,
-                            );
+                            if (!willEdit) {
+                              await homeCtr.insertData(
+                                homeCtr.titleEditing.text,
+                                homeCtr.topicEditing.text,
+                              );
+                            } else {
+                              print(homeCtr.titleEditing.text);
+                              print(homeCtr.topicEditing.text);
+                              await homeCtr.updateDate(
+                                index,
+                                'title',
+                                homeCtr.titleEditing.text,
+                              );
+                              await homeCtr.updateDate(
+                                index,
+                                'topic',
+                                homeCtr.topicEditing.text,
+                              );
+                            }
                             homeCtr.titleEditing.clear();
                             homeCtr.topicEditing.clear();
                             Get.back();
                           }
                         },
-                        icon: Icon(Icons.arrow_back, size: AppDimensions.responsiveWidth(25)),
+                        icon: Icon(Icons.arrow_back,
+                            size: AppDimensions.responsiveWidth(25)),
                       ),
                     ),
                     Container(

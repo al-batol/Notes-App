@@ -13,7 +13,11 @@ class NoteModel {
 
   String? get timeStamp => _timeStamp;
 
-  NoteModel({required int id, required String title, required String topic, required String timeStamp}) {
+  NoteModel(
+      {required int id,
+      required String title,
+      required String topic,
+      required String timeStamp}) {
     _id = id;
     _title = title;
     _topic = topic;
@@ -27,16 +31,26 @@ class NoteModel {
     _timeStamp = json['timestamp'];
   }
 
+  operator [](String name) {
+    if (name == 'id') return _id;
+    if (name == 'title') return _title;
+    if (name == 'topic') return _topic;
+    if (name == 'timestamp') return _timeStamp;
+    return null;
+  }
 
-
-  @override
-  bool operator ==(Object other) =>
-      other is NoteModel &&
-          other.runtimeType == runtimeType &&
-          other._id == _id &&
-          _title == other._title &&
-          _topic == other._topic  ;
-
-  @override
-  int get hashCode => _id.hashCode ^ _title.hashCode ^ _topic.hashCode;
+  void operator []=(String name, String value) {
+    if (name == 'id') {
+      _id = int.parse(value);
+    }
+    if (name == 'title') {
+      _title = value;
+    }
+    if (name == 'topic') {
+      _topic = value;
+    }
+    if (name == 'timestamp') {
+      _timeStamp = value;
+    }
+  }
 }

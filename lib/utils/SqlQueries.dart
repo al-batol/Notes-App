@@ -23,18 +23,18 @@ class SqlQueries {
     ''';
   }
 
-  static String updateDataSql(String id, String columnName, String newValue) {
+  static String updateDataSql(int id, String columnName, String newValue) {
     return '''
-          UPDATE 'notes'
-          SET '$columnName' = '$newValue'
-          WHERE 'id' = '$id'
+          UPDATE "notes"
+          SET "$columnName" = '$newValue'
+          WHERE "id" = '$id'
     ''';
   }
 
   static String deleteDataSql(int id) {
     return '''
-    DELETE FROM "notes"
-    WHERE "id" = '$id'
+          DELETE FROM "notes"
+          WHERE "id" = '$id'
   ''';
   }
 }

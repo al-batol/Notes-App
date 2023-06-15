@@ -45,44 +45,44 @@ class HomePage extends GetView<HomePageController> {
               ],
             ),
             GetBuilder<HomePageController>(
-              builder: (ctr) => GridView.count(
+              builder: (ctr) => GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 2,
-                children: [
-                  ...ctr.notes.map(
-                    (e) => LongPressDraggable(
-                      data: e,
-                      onDragStarted: () {
-                        ctr.dragState = true;
+                itemCount: ctr.notes.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                itemBuilder: (BuildContext context, int index) {
+                  return LongPressDraggable(
+                    data: ctr.notes[index],
+                    onDragStarted: () {
+                      ctr.dragState = true;
+                    },
+                    onDraggableCanceled: (_, __) {
+                      ctr.dragState = false;
+                    },
+                    onDragEnd: (_) {
+                      ctr.dragState = false;
+                    },
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.toNamed(AppRoutes.getEditNote(true, index));
                       },
-                      onDraggableCanceled: (_, __) {
-                        ctr.dragState = false;
-                      },
-                      onDragEnd: (_) {
-                        ctr.dragState = false;
-                      },
-                      child: GestureDetector(
-                        onTap: (){
-                          Get.toNamed(AppRoutes.addNote);
-                        },
-                        child: NoteContainer(
-                          title: e.title,
-                          topic: e.topic!,
-                          timeStamp: e.timeStamp!,
-                        ),
-                      ),
-                      feedback: Opacity(
-                        opacity: 0.8,
-                        child: NoteContainer(
-                          title: e.title,
-                          topic: e.topic!,
-                          timeStamp: e.timeStamp!,
-                        ),
+                      child: NoteContainer(
+                        title: ctr.notes[index].title,
+                        topic: ctr.notes[index].topic!,
+                        timeStamp: ctr.notes[index].timeStamp!,
                       ),
                     ),
-                  )
-                ],
+                    feedback: Opacity(
+                      opacity: 0.8,
+                      child: NoteContainer(
+                        title: ctr.notes[index].title,
+                        topic: ctr.notes[index].topic!,
+                        timeStamp: ctr.notes[index].timeStamp!,
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ],
@@ -93,7 +93,7 @@ class HomePage extends GetView<HomePageController> {
           builder: (_, __, ___) => FloatingActionButton(
               backgroundColor: ctr.onDraggable ? Colors.red : Colors.blue,
               onPressed: () async {
-                Get.toNamed(AppRoutes.getAddNote);
+                Get.toNamed(AppRoutes.getAddNote());
                 // await AppDatabase().deleteDb();
                 // ctr.deleteData(1);
               },

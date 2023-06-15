@@ -30,6 +30,7 @@ class HomePageController extends GetxController {
   @override
   void onInit() async {
     await readData();
+    update();
     super.onInit();
   }
 
@@ -67,14 +68,24 @@ class HomePageController extends GetxController {
     }
   }
 
-  Future<void> updateDate(String id, String columnName, String newValue) async {
-    await appRepo
-        .updateData(SqlQueries.updateDataSql(id, columnName, newValue));
+  Future<void> updateDate(int index, String columnName, String newValue) async {
+    _notes[index][columnName] = newValue;
+    await appRepo.updateData(
+        SqlQueries.updateDataSql(_notes[index].id!, columnName, newValue));
+    update();
   }
 
   Future<void> deleteData(int id) async {
     _notes.removeWhere((element) => element.id == id);
     await appRepo.deleteData(SqlQueries.deleteDataSql(id));
     update();
+  }
+
+  void willEditPage(bool willEdit, int index) {
+    if (willEdit) {
+      NoteModel note = _notes[index];
+      titleEditing.text = note.title!;
+      topicEditing.text = note.topic!;
+    }
   }
 }
