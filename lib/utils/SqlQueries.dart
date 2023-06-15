@@ -4,7 +4,8 @@ class SqlQueries {
           CREATE TABLE 'notes' (
           'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
           'title' TEXT NOT NULL,
-          'topic' TEXT NOT NULL
+          'topic' TEXT NOT NULL,
+          'timestamp' TEXT NOT NULL
           )
     ''';
   }
@@ -15,10 +16,10 @@ class SqlQueries {
   ''';
   }
 
-  static String insertDataSql(String title, String topic) {
+  static String insertDataSql(String title, String topic, String timestamp) {
     return '''
-           INSERT INTO 'notes' ('title', 'topic') 
-           VALUES ('$title', '$topic')
+           INSERT INTO 'notes' ('title', 'topic', 'timestamp') 
+           VALUES ('$title', '$topic', '$timestamp')
     ''';
   }
 
@@ -30,10 +31,10 @@ class SqlQueries {
     ''';
   }
 
-  static String deleteDataSql(String id) {
+  static String deleteDataSql(int id) {
     return '''
-           DELETE FROM 'notes'
-           WHERE 'id' = '$id'
-    ''';
+    DELETE FROM "notes"
+    WHERE "id" = '$id'
+  ''';
   }
 }

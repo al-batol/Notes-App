@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:notes_app/data/repo.dart';
 import 'package:notes_app/models/note_model.dart';
 import 'package:notes_app/utils/SqlQueries.dart';
+import 'package:intl/intl.dart';
 
 class HomePageController extends GetxController {
   AppRepo appRepo;
@@ -17,27 +18,38 @@ class HomePageController extends GetxController {
   final TextEditingController titleEditing = TextEditingController();
   final TextEditingController topicEditing = TextEditingController();
 
-  bool onDraggable = false;
+  bool _onDraggable = false;
+
+  set dragState(bool isDragging) {
+    _onDraggable = isDragging;
+    update();
+  }
+
+  bool get onDraggable => _onDraggable;
+
   @override
-  void onInit() {
-    readData();
+  void onInit() async {
+    await readData();
     super.onInit();
   }
 
-  void readData() async {
+  Future<void> readData() async {
     List<Map<String, dynamic>> allNotes =
         await appRepo.readData(SqlQueries.readDataSql());
     _notes.addAll(allNotes.map((e) => NoteModel.fromJson(e)).toList());
   }
 
   Future<void> insertData(String title, String topic) async {
+    DateFormat format = DateFormat('MMM d, yyyy');
+    String timeStamp = format.format(DateTime.now());
     Map<String, dynamic> note = {
+      'id': getTheGreaterId(),
       'title': title,
       'topic': topic,
-      'id': _notes.isEmpty ? 1 : getTheGreaterId() + 1
+      'timestamp': timeStamp,
     };
     _notes.add(NoteModel.fromJson(note));
-    await appRepo.insertData(SqlQueries.insertDataSql(title, topic));
+    await appRepo.insertData(SqlQueries.insertDataSql(title, topic, timeStamp));
     update();
   }
 
@@ -49,7 +61,7 @@ class HomePageController extends GetxController {
           temp = _notes[i].id!;
         }
       }
-      return temp;
+      return temp + 1;
     } else {
       return 1;
     }
@@ -62,7 +74,7 @@ class HomePageController extends GetxController {
 
   Future<void> deleteData(int id) async {
     _notes.removeWhere((element) => element.id == id);
-    await appRepo.deleteData(SqlQueries.deleteDataSql(id.toString()));
+    await appRepo.deleteData(SqlQueries.deleteDataSql(id));
     update();
   }
 }

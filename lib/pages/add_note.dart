@@ -6,7 +6,6 @@ import '../controllers/home_page_controller.dart';
 
 class AddNote extends StatelessWidget {
   HomePageController homeCtr = Get.find<HomePageController>();
-
   AddNote({Key? key}) : super(key: key);
 
   @override
@@ -27,23 +26,27 @@ class AddNote extends StatelessWidget {
                 child: Row(
                   children: [
                     SizedBox(
-                      width: 10.0.wp,
+                      width: 15.0.wp,
                       height: 10.0.hp,
                       child: IconButton(
                         onPressed: () async {
-                          await homeCtr.insertData(
-                            homeCtr.titleEditing.text,
-                            homeCtr.topicEditing.text,
-                          );
-                          homeCtr.titleEditing.clear();
-                          homeCtr.topicEditing.clear();
-                          Get.back();
+                          if(homeCtr.titleEditing.text.trim().isEmpty && homeCtr.topicEditing.text.trim().isEmpty) {
+                            Get.back();
+                          } else {
+                            await homeCtr.insertData(
+                              homeCtr.titleEditing.text,
+                              homeCtr.topicEditing.text,
+                            );
+                            homeCtr.titleEditing.clear();
+                            homeCtr.topicEditing.clear();
+                            Get.back();
+                          }
                         },
-                        icon: Icon(Icons.arrow_back),
+                        icon: Icon(Icons.arrow_back, size: AppDimensions.responsiveWidth(25)),
                       ),
                     ),
                     Container(
-                      width: 90.0.wp,
+                      width: 85.0.wp,
                       height: 10.0.hp,
                       padding: EdgeInsets.only(
                         top: 2.0.hp,

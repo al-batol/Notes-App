@@ -39,7 +39,7 @@ class AppDatabase extends GetxService {
   }
 
   Future<void> deleteData(String sql) async {
-    await _database!.rawDelete(sql);
+   await _database!.rawDelete(sql);
   }
   Future<void> deleteDb() async {
     String databasePath = await getDatabasesPath();
