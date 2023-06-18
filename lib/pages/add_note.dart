@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:notes_app/utils/app_dimensions.dart';
 
 import 'package:notes_app/controllers/home_page_controller.dart';
-import 'package:notes_app/models/note_model.dart';
 
 class AddNote extends StatelessWidget {
   HomePageController homeCtr = Get.find<HomePageController>();
@@ -48,8 +47,6 @@ class AddNote extends StatelessWidget {
                                 homeCtr.topicEditing.text,
                               );
                             } else {
-                              print(homeCtr.titleEditing.text);
-                              print(homeCtr.topicEditing.text);
                               await homeCtr.updateDate(
                                 index,
                                 'title',

@@ -4,6 +4,7 @@ class NoteModel {
   String? _topic;
 
   String? _timeStamp;
+  String? _formattedTime;
 
   int? get id => _id;
 
@@ -13,15 +14,19 @@ class NoteModel {
 
   String? get timeStamp => _timeStamp;
 
+  String? get formattedTime => _formattedTime;
+
   NoteModel(
       {required int id,
       required String title,
       required String topic,
-      required String timeStamp}) {
+      required String timeStamp,
+      required String formattedTime}) {
     _id = id;
     _title = title;
     _topic = topic;
     _timeStamp = timeStamp;
+    _formattedTime = formattedTime;
   }
 
   NoteModel.fromJson(Map<String, dynamic> json) {
@@ -29,6 +34,7 @@ class NoteModel {
     _title = json['title'];
     _topic = json['topic'];
     _timeStamp = json['timestamp'];
+    _formattedTime = json['formattedTime'];
   }
 
   operator [](String name) {
@@ -36,6 +42,7 @@ class NoteModel {
     if (name == 'title') return _title;
     if (name == 'topic') return _topic;
     if (name == 'timestamp') return _timeStamp;
+    if (name == 'formattedTime') return _formattedTime;
     return null;
   }
 
@@ -51,6 +58,9 @@ class NoteModel {
     }
     if (name == 'timestamp') {
       _timeStamp = value;
+    }
+    if (name == 'formattedTime') {
+      _formattedTime = value;
     }
   }
 }

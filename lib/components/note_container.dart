@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/utils/app_dimensions.dart';
 
 class NoteContainer extends StatelessWidget {
-  String? title;
-  String topic;
-  String timeStamp;
-  NoteContainer({Key? key, this.title, required this.topic, required this.timeStamp}) : super(key: key);
+  final String? title;
+  final String topic;
+  final String formattedTime;
+  const NoteContainer({Key? key, this.title, required this.topic, required this.formattedTime}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class NoteContainer extends StatelessWidget {
               bottom: AppDimensions.responsiveWidth(20),
               left: AppDimensions.responsiveWidth(30),
               child: Text(
-                timeStamp,
+                formattedTime,
                 style: TextStyle(fontSize: 10.0.sp, color: Colors.black54),
               ),
             ),

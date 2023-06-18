@@ -5,7 +5,8 @@ class SqlQueries {
           'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
           'title' TEXT NOT NULL,
           'topic' TEXT NOT NULL,
-          'timestamp' TEXT NOT NULL
+          'timestamp' TEXT NOT NULL,
+          'formattedTime' INTEGER NOT NULL
           )
     ''';
   }
@@ -16,10 +17,10 @@ class SqlQueries {
   ''';
   }
 
-  static String insertDataSql(String title, String topic, String timestamp) {
+  static String insertDataSql(String title, String topic, int timestamp, String formattedTime) {
     return '''
-           INSERT INTO 'notes' ('title', 'topic', 'timestamp') 
-           VALUES ('$title', '$topic', '$timestamp')
+           INSERT INTO "notes" ('title', 'topic', 'timestamp', 'formattedTime') 
+           VALUES ('$title', '$topic', '$timestamp', '$formattedTime')
     ''';
   }
 

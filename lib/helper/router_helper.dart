@@ -1,7 +1,5 @@
-import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:notes_app/models/note_model.dart';
 import 'package:notes_app/pages/add_note.dart';
 import 'package:notes_app/pages/home_page.dart';
 
@@ -21,8 +19,8 @@ class AppRoutes {
       '$editNote?willEdit=$willEdit&index=$index';
 
   static List<GetPage> pages = [
-    GetPage(name: initial, page: () => const HomePage()),
-    GetPage(name: homePage, page: () => const HomePage()),
+    GetPage(name: initial, page: () =>  HomePage()),
+    GetPage(name: homePage, page: () =>  HomePage()),
     GetPage(
       name: addNote,
       page: () {

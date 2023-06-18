@@ -30,7 +30,6 @@ class HomePageController extends GetxController {
   @override
   void onInit() async {
     await readData();
-    update();
     super.onInit();
   }
 
@@ -42,15 +41,18 @@ class HomePageController extends GetxController {
 
   Future<void> insertData(String title, String topic) async {
     DateFormat format = DateFormat('MMM d, yyyy');
-    String timeStamp = format.format(DateTime.now());
+    DateTime timeStamp = DateTime.now();
+    String formattedTime = format.format(DateTime.now());
     Map<String, dynamic> note = {
       'id': getTheGreaterId(),
       'title': title,
       'topic': topic,
-      'timestamp': timeStamp,
+      'timestamp': timeStamp.millisecondsSinceEpoch.toString(),
+      'formattedTime': formattedTime,
     };
     _notes.add(NoteModel.fromJson(note));
-    await appRepo.insertData(SqlQueries.insertDataSql(title, topic, timeStamp));
+    await appRepo.insertData(SqlQueries.insertDataSql(
+        title, topic, timeStamp.millisecondsSinceEpoch, formattedTime));
     update();
   }
 
@@ -86,6 +88,53 @@ class HomePageController extends GetxController {
       NoteModel note = _notes[index];
       titleEditing.text = note.title!;
       topicEditing.text = note.topic!;
+    }
+  }
+
+  final List<String> items = [
+    'sort',
+    'edit',
+    'dark mode',
+  ];
+
+  final List<String> sortBy = ['Ascending', 'Descending'];
+  String _sort = '';
+
+  String get sort {
+    return _sort;
+  }
+
+  set sort(String value) {
+    _sort = value;
+    update();
+  }
+
+  // prevent the user to not call the same option multiple times
+  bool isAsc = false;
+  bool isDesc = true;
+
+  void sortNotes(String sortType) {
+    if (sortType == sortBy[0] && isAsc) {
+      isDesc = true;
+      isAsc = false;
+      _notes.sort((a, b) {
+        DateTime timeA =
+            DateTime.fromMicrosecondsSinceEpoch(int.parse(a.timeStamp!));
+        DateTime timeB =
+            DateTime.fromMicrosecondsSinceEpoch(int.parse(b.timeStamp!));
+        return timeA.compareTo(timeB);
+      });
+    } else if (sortType == sortBy[1] && isDesc) {
+      isAsc = true;
+      isDesc = false;
+      _notes.sort((a, b) {
+        DateTime timeA =
+            DateTime.fromMillisecondsSinceEpoch(int.parse(a.timeStamp!));
+        DateTime timeB =
+            DateTime.fromMillisecondsSinceEpoch(int.parse(b.timeStamp!));
+        print('desc');
+        return timeB.compareTo(timeA);
+      });
     }
   }
 }
