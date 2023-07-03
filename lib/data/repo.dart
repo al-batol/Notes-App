@@ -5,6 +5,8 @@ class AppRepo {
 
   AppRepo({required this.appDatabase});
 
+  // sqflite
+
   Future<List<Map<String, dynamic>>> readData(String sql) async {
     return await appDatabase.readData(sql);
   }
@@ -19,5 +21,18 @@ class AppRepo {
 
   Future<void> deleteData(String sql) async {
     await appDatabase.deleteData(sql);
+  }
+
+  // shared preferences
+  Future<void> setData(String key, int value) async {
+    await appDatabase.setData(key, value);
+  }
+
+  Future<int> getData(String key) async {
+    return await appDatabase.getData(key);
+  }
+
+  Future<void> restTheme() async {
+    return await appDatabase.clearTheme();
   }
 }

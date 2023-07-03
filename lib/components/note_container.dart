@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:notes_app/utils/app_dimensions.dart';
 
+
 class NoteContainer extends StatelessWidget {
   final String? title;
   final String topic;
   final String formattedTime;
-  const NoteContainer({Key? key, this.title, required this.topic, required this.formattedTime}) : super(key: key);
+
+  const NoteContainer(
+      {Key? key, this.title, required this.topic, required this.formattedTime})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +19,7 @@ class NoteContainer extends StatelessWidget {
       height: squareWidth / 2,
       margin: EdgeInsets.all(3.0.wp),
       child: Material(
-        borderRadius:  BorderRadius.circular(10.0.wp),
+        borderRadius: BorderRadius.circular(10.0.wp),
         child: Stack(
           children: [
             Container(
@@ -23,34 +27,28 @@ class NoteContainer extends StatelessWidget {
               height: squareWidth / 2,
               padding: EdgeInsets.symmetric(horizontal: 3.0.wp),
               decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(10.0.wp),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey[300]!,
-                        blurRadius: 5,
-                        offset: Offset(0, 5)),
-                    BoxShadow(
-                        color: Colors.white, blurRadius: 5, offset: Offset(-5, 0)),
-                    BoxShadow(
-                        color: Colors.white, blurRadius: 5, offset: Offset(0, -5)),
-                  ]),
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(10.0.wp),
+              ),
               child: Center(
-                  child: Text(
-                title ?? topic,
-                style: TextStyle(
-                  fontSize: 24.0.sp,
-                  overflow: TextOverflow.ellipsis,
-                  color: Colors.black54,
+                child: Text(
+                  title!.trim().isEmpty ? topic: title!,
+                  maxLines: 3,
+                  style: TextStyle(
+                      fontSize: 18.0.sp,
+                      overflow: TextOverflow.ellipsis,
+                      color: Theme.of(context).iconTheme.color),
                 ),
-              )),
+              ),
             ),
             Positioned(
               bottom: AppDimensions.responsiveWidth(20),
               left: AppDimensions.responsiveWidth(30),
               child: Text(
                 formattedTime,
-                style: TextStyle(fontSize: 10.0.sp, color: Colors.black54),
+                style: TextStyle(
+                    fontSize: 10.0.sp,
+                    color: Theme.of(context).iconTheme.color),
               ),
             ),
           ],

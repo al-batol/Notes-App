@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -6,8 +7,6 @@ import 'package:notes_app/utils/SqlQueries.dart';
 
 class AppDatabase extends GetxService {
   Database? _database;
-
-
   Future<AppDatabase> initDatabase() async {
     String databasePath = await getDatabasesPath();
     String path = join(databasePath, 'app_notes.db');
@@ -39,11 +38,34 @@ class AppDatabase extends GetxService {
   }
 
   Future<void> deleteData(String sql) async {
-   await _database!.rawDelete(sql);
+    await _database!.rawDelete(sql);
   }
+
   Future<void> deleteDb() async {
     String databasePath = await getDatabasesPath();
     String path = join(databasePath, 'app_notes.db');
     deleteDatabase(path);
   }
+
+  // shared preferences
+  Future<void> clearTheme() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    int? lang = pref.getInt('lang');
+    await pref.clear();
+    pref.setInt('lang', lang!);
+  }
+
+  Future<void> setData(String key, int value) async {
+    SharedPreferences store = await SharedPreferences.getInstance();
+    await store.setInt(key, value);
+  }
+
+  Future<int> getData(String key) async {
+    SharedPreferences store = await SharedPreferences.getInstance();
+    if(store.containsKey(key)) {
+      return store.getInt(key)!;
+    }
+    return 0;
+  }
+
 }

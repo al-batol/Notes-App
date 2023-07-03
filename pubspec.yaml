@@ -38,6 +38,7 @@ dependencies:
   get: ^4.6.5
   sqflite: ^2.2.8+4
   intl: ^0.18.1
+  shared_preferences: ^2.1.2
 
 dev_dependencies:
   flutter_test:

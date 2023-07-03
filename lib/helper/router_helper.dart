@@ -1,6 +1,5 @@
-
 import 'package:get/get.dart';
-import 'package:notes_app/pages/add_note.dart';
+import 'package:notes_app/pages/add_edit_note.dart';
 import 'package:notes_app/pages/home_page.dart';
 
 class AppRoutes {
@@ -9,31 +8,33 @@ class AppRoutes {
   static const String addNote = '/addNote';
   static const String editNote = '/editNote';
 
-  static String getInitial () => initial;
+  static String getInitial() => initial;
 
-  static String getHomePage () => homePage;
+  static String getHomePage() => homePage;
 
-  static String  getAddNote() => addNote;
+  static String getAddNote() => addNote;
 
   static String getEditNote(bool willEdit, int index) =>
       '$editNote?willEdit=$willEdit&index=$index';
 
   static List<GetPage> pages = [
-    GetPage(name: initial, page: () =>  HomePage()),
-    GetPage(name: homePage, page: () =>  HomePage()),
+    GetPage(name: initial, page: () => HomePage()),
+    GetPage(name: homePage, page: () => HomePage()),
     GetPage(
       name: addNote,
       page: () {
-        return AddNote(willEdit: false);
+        return AddOrEditNote(willEdit: false);
       },
-      transition: Transition.downToUp,
+      transition: Transition.fadeIn,
     ),
     GetPage(
-        name: editNote,
-        page: () {
-          bool willEdit = Get.parameters['willEdit'] == 'true';
-          int index = int.parse(Get.parameters['index'].toString());
-          return AddNote(willEdit: willEdit, index: index);
-        })
+      name: editNote,
+      page: () {
+        bool willEdit = Get.parameters['willEdit'] == 'true';
+        int index = int.parse(Get.parameters['index'].toString());
+        return AddOrEditNote(willEdit: willEdit, index: index);
+      },
+      transition: Transition.fadeIn,
+    )
   ];
 }
