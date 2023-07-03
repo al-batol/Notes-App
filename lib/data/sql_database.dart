@@ -51,8 +51,10 @@ class AppDatabase extends GetxService {
   Future<void> clearTheme() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     int? lang = pref.getInt('lang');
+    int? themeMode = pref.getInt('theme');
     await pref.clear();
     pref.setInt('lang', lang!);
+    pref.setInt('theme', themeMode!);
   }
 
   Future<void> setData(String key, int value) async {
