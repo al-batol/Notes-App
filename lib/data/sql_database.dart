@@ -50,11 +50,17 @@ class AppDatabase extends GetxService {
   // shared preferences
   Future<void> clearTheme() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    int? lang = pref.getInt('lang');
-    int? themeMode = pref.getInt('theme');
+    int lang = 0;
+    int themeMode = 0;
+    if(await getData('lang') != 0) {
+      lang = pref.getInt('lang')!;
+    }
+    if(await getData('theme') != 0) {
+      themeMode = pref.getInt('theme')!;
+    }
     await pref.clear();
-    pref.setInt('lang', lang!);
-    pref.setInt('theme', themeMode!);
+    pref.setInt('lang', lang);
+    pref.setInt('theme', themeMode);
   }
 
   Future<void> setData(String key, int value) async {

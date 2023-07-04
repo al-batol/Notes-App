@@ -41,14 +41,8 @@ class HomePageController extends GetxController {
   }
 
   bool get onDraggable => _onDraggable;
+  bool isLoaded = false;
 
-  @override
-  void onInit() async {
-    await readData();
-    calculatePageSize(AppDimensions.fontSize);
-    update();
-    super.onInit();
-  }
 
   @override
   void onClose() async {
@@ -80,14 +74,15 @@ class HomePageController extends GetxController {
     List<Map<String, dynamic>> allNotes =
         await appRepo.readData(SqlQueries.readDataSql());
     _notes.addAll(allNotes.map((e) => NoteModel.fromJson(e)).toList());
+    calculatePageSize(AppDimensions.fontSize);
   }
-
+  int notesNumber = 1;
   Future<void> insertData(String title, String topic) async {
     DateFormat format = DateFormat('MMM d, yyyy');
     DateTime timeStamp = DateTime.now();
     String formattedTime = format.format(DateTime.now());
     Map<String, dynamic> note = {
-      'id': getTheGreaterId(),
+      'id': notesNumber,
       'title': title,
       'topic': topic,
       'timestamp': timeStamp.millisecondsSinceEpoch.toString(),
@@ -96,22 +91,23 @@ class HomePageController extends GetxController {
     _notes.add(NoteModel.fromJson(note));
     await appRepo.insertData(SqlQueries.insertDataSql(
         title, topic, timeStamp.millisecondsSinceEpoch, formattedTime));
+    notesNumber = (NoteModel.fromJson(note).id! + 1);
     update();
   }
 
-  int getTheGreaterId() {
-    if (_notes.isNotEmpty) {
-      int temp = _notes[0].id!;
-      for (int i = 0; i < _notes.length; i++) {
-        if (temp < _notes[i].id!) {
-          temp = _notes[i].id!;
-        }
-      }
-      return temp + 1;
-    } else {
-      return 1;
-    }
-  }
+  // int getTheGreaterId() {
+  //   if (_notes.isNotEmpty) {
+  //     int temp = _notes[0].id!;
+  //     for (int i = 0; i < _notes.length; i++) {
+  //       if (temp < _notes[i].id!) {
+  //         temp = _notes[i].id!;
+  //       }
+  //     }
+  //     return temp + 1;
+  //   } else {
+  //     return 1;
+  //   }
+  // }
 
   Future<void> updateDate(int index, String columnName, String newValue) async {
     _notes[index][columnName] = newValue;

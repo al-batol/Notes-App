@@ -39,10 +39,35 @@ dependencies:
   sqflite: ^2.2.8+4
   intl: ^0.18.1
   shared_preferences: ^2.1.2
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: false
+  image_path: "assets/take_notes.png"
+  adaptive_icon_background: "#e4e5f1"
+  min_sdk_android: 21
+
+# flutter_native_splash-development.yaml
+flutter_native_splash:
+  color: "#e4e5f1"
+  image: assets/take_notes.png
+  color_dark: "#000000"
+  image_dark: assets/take_notes.png
+
+  android_12:
+    image: assets/take_notes.png
+    icon_background_color: "#e4e5f1"
+    image_dark: assets/take_notes.png
+    icon_background_color_dark: "#000000"
+
+  web: false
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

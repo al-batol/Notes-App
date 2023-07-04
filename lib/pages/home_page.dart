@@ -9,7 +9,7 @@ import 'package:notes_app/utils/app_dimensions.dart';
 
 import 'package:notes_app/models/note_model.dart';
 
-import '../controllers/settings_controller.dart';
+import 'package:notes_app/controllers/settings_controller.dart';
 
 class HomePage extends GetView<HomePageController> {
   const HomePage({Key? key}) : super(key: key);
@@ -31,7 +31,7 @@ class HomePage extends GetView<HomePageController> {
         ),
       );
     }).toList();
-    return GetBuilder<HomePageController>(
+    return controller.isLoaded ?GetBuilder<HomePageController>(
       builder: (ctr) => AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
           systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
@@ -88,7 +88,7 @@ class HomePage extends GetView<HomePageController> {
                                   Container(
                                     width: 100.0.wp,
                                     height: 20.0.hp,
-                                    padding: EdgeInsets.only(top: 2.0.wp, left: settingsCtr.lang == 'en'? 3.0.hp: 0.0.wp, right: settingsCtr.lang == 'ar'? 3.0.hp: 0.0.wp,),
+                                    padding: EdgeInsets.only(top: 2.0.wp, left: settingsCtr.lang == 'en'? 3.0.hp: 0.0.wp, right: settingsCtr.lang == 'ar'? 3.0.hp: 0.0.wp,bottom: 5.0.wp),
                                     decoration: BoxDecoration(
                                         color: Theme.of(context)
                                             .scaffoldBackgroundColor,
@@ -98,35 +98,40 @@ class HomePage extends GetView<HomePageController> {
                                         )),
                                     child: Column(
                                       crossAxisAlignment: settingsCtr.lang == 'en'? CrossAxisAlignment.start: CrossAxisAlignment.end,
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'OB'.tr,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium,
-                                            ),
-                                          ],
+                                        Expanded(
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                'OB'.tr,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         ...controller.sortBy.map(
                                           (e) => GetBuilder<HomePageController>(
                                             builder: (ctr) {
-                                              return RadioListTile(
-                                                value: e,
-                                                groupValue: ctr.sort,
-                                                contentPadding: EdgeInsets.zero,
-                                                selected: ctr.sort == e,
-                                                title: Text(
-                                                  e.tr,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleMedium,
+                                              return Expanded(
+                                                child: RadioListTile(
+                                                  value: e,
+                                                  groupValue: ctr.sort,
+                                                  contentPadding: EdgeInsets.zero,
+                                                  selected: ctr.sort == e,
+                                                  title: Text(
+                                                    e.tr,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleMedium,
+                                                  ),
+                                                  onChanged: (value) {
+                                                    ctr.sort = value as String;
+                                                    ctr.sortNotes(value);
+                                                  },
                                                 ),
-                                                onChanged: (value) {
-                                                  ctr.sort = value as String;
-                                                  ctr.sortNotes(value);
-                                                },
                                               );
                                             },
                                           ),
@@ -175,186 +180,183 @@ class HomePage extends GetView<HomePageController> {
                                         crossAxisAlignment: settingsCtr.lang == 'en'? CrossAxisAlignment.start: CrossAxisAlignment.end,
                                         children: [
                                           // edit theme
-                                          GetBuilder<HomePageController>(
-                                            builder: (ctr) => Center(
-                                              child: Text(
-                                                'ET'.tr,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headlineLarge!
-                                                    .copyWith(
-                                                        color: Color(ctr
-                                                            .titleAndButtonsColor)),
+                                          Expanded(
+                                            child: GetBuilder<HomePageController>(
+                                              builder: (ctr) => Center(
+                                                child: Text(
+                                                  'ET'.tr,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headlineLarge!
+                                                      .copyWith(
+                                                          color: Color(ctr
+                                                              .titleAndButtonsColor)),
+                                                ),
                                               ),
                                             ),
                                           ),
                                           SizedBox(height: 2.0.hp),
                                           // font size
-                                          GetBuilder<HomePageController>(
-                                            builder: (ctr) => LayoutBuilder(
-                                                builder:
-                                                    (context, constraints) {
-                                              String dots = '';
-                                              for (int i = 0;
-                                                  i <
-                                                      (constraints.constrainWidth() /
-                                                              20)
-                                                          .round();
-                                                  i++) {
-                                                dots += '..';
-                                              }
-                                              return RichText(
-                                                  text: TextSpan(children: [
-                                                TextSpan(
-                                                    text: 'FZ'.tr,
+                                          Expanded(
+                                            child: GetBuilder<HomePageController>(
+                                              builder: (ctr) => LayoutBuilder(
+                                                  builder:
+                                                      (context, constraints) {
+                                                    final double dotsWidth = 3.0;
+                                                    final int dotsCounter = (constraints.constrainWidth() /(constraints.constrainWidth() / 8.0.wp)).floor();
+                                                    return Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          'FZ'.tr, style: Theme.of(context)
+                                                            .textTheme
+                                                            .headlineMedium!
+                                                            .copyWith(
+                                                          color: Color(
+                                                              ctr.textColor),
+                                                        ),
+                                                        ),
+                                                        ...List.generate(dotsCounter, (index) => Container(
+                                                          width: dotsWidth,
+                                                          decoration: BoxDecoration(
+                                                            shape: BoxShape.circle,
+                                                            color:  Color(
+                                                                ctr.textColor),
+                                                          ),
+                                                        ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  }),
+                                            ),
+                                          ),
+                                          SizedBox(height: 2.0.hp),
+                                          // test box
+                                          Expanded(
+                                            flex: 3,
+                                            child: GetBuilder<HomePageController>(
+                                              builder: (ctr) => Center(
+                                                child: Container(
+                                                  width: 50.0.wp,
+                                                  height: 15.0.hp,
+                                                  padding: EdgeInsets.all(2.0.wp),
+                                                  decoration: BoxDecoration(
+                                                    color: Color(
+                                                        ctr.appBarAndPageColor),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5.0.wp),
+                                                  ),
+                                                  child: Text(
+                                                    'H'.tr,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .displayLarge!
+                                                        .copyWith(
+                                                          fontSize: AppDimensions
+                                                              .fontSize,
+                                                          color: Color(
+                                                              ctr.textColor),
+                                                        ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          // slider
+                                          Expanded(
+                                            child: GetBuilder<HomePageController>(
+                                              builder: (ctr) {
+                                                List steps = List.generate(29,
+                                                    (index) => 2.0 * index + 8);
+                                                return Slider(
+                                                  value: steps
+                                                      .indexOf(AppDimensions
+                                                          .fontSize
+                                                          .toInt())
+                                                      .toDouble(),
+                                                  min: 0.0,
+                                                  max: 28.0,
+                                                  activeColor: Colors.red,
+                                                  onChanged: (double value) {
+                                                    ctr.current =
+                                                        steps[value.toInt()];
+                                                    AppDimensions.fontSize =
+                                                        steps[value.toInt()];
+                                                  },
+                                                  onChangeEnd: (value) {
+                                                    ctr.updateFontSize(
+                                                        steps[value.toInt()]);
+                                                    ctr.calculatePageSize(
+                                                        AppDimensions.fontSize);
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          // font size
+                                          Expanded(
+                                            child: GetBuilder<HomePageController>(
+                                              builder: (ctr) => Center(
+                                                child: Container(
+                                                  padding: EdgeInsets.all(1.0.wp),
+                                                  width: 10.0.wp,
+                                                  height: 10.0.wp,
+                                                  decoration: BoxDecoration(
+                                                    color: Color(
+                                                        ctr.appBarAndPageColor),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5.0.wp),
+                                                  ),
+                                                  child: Text(
+                                                    '${AppDimensions.fontSize.toInt()}',
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .headlineMedium!
                                                         .copyWith(
                                                           color: Color(
                                                               ctr.textColor),
-                                                        )),
-                                                TextSpan(
-                                                  text: dots,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headlineMedium!
-                                                      .copyWith(
-                                                        color: Color(
-                                                            ctr.textColor),
-                                                      )
-                                                      .copyWith(
-                                                          fontSize: 18.0.sp),
-                                                ),
-                                              ]));
-                                            }),
-                                          ),
-                                          SizedBox(height: 2.0.hp),
-                                          // test box
-                                          GetBuilder<HomePageController>(
-                                            builder: (ctr) => Center(
-                                              child: Container(
-                                                width: 50.0.wp,
-                                                height: 15.0.hp,
-                                                padding: EdgeInsets.all(2.0.wp),
-                                                decoration: BoxDecoration(
-                                                  color: Color(
-                                                      ctr.appBarAndPageColor),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          5.0.wp),
-                                                ),
-                                                child: Text(
-                                                  'H'.tr,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .displayLarge!
-                                                      .copyWith(
-                                                        fontSize: AppDimensions
-                                                            .fontSize,
-                                                        color: Color(
-                                                            ctr.textColor),
-                                                      ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          // slider
-                                          GetBuilder<HomePageController>(
-                                            builder: (ctr) {
-                                              List steps = List.generate(29,
-                                                  (index) => 2.0 * index + 8);
-                                              return Slider(
-                                                value: steps
-                                                    .indexOf(AppDimensions
-                                                        .fontSize
-                                                        .toInt())
-                                                    .toDouble(),
-                                                min: 0.0,
-                                                max: 28.0,
-                                                activeColor: Colors.red,
-                                                onChanged: (double value) {
-                                                  ctr.current =
-                                                      steps[value.toInt()];
-                                                  AppDimensions.fontSize =
-                                                      steps[value.toInt()];
-                                                },
-                                                onChangeEnd: (value) {
-                                                  ctr.updateFontSize(
-                                                      steps[value.toInt()]);
-                                                  ctr.calculatePageSize(
-                                                      AppDimensions.fontSize);
-                                                },
-                                              );
-                                            },
-                                          ),
-                                          // font size
-                                          GetBuilder<HomePageController>(
-                                            builder: (ctr) => Center(
-                                              child: Container(
-                                                padding: EdgeInsets.all(1.0.wp),
-                                                width: 10.0.wp,
-                                                height: 10.0.wp,
-                                                decoration: BoxDecoration(
-                                                  color: Color(
-                                                      ctr.appBarAndPageColor),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          5.0.wp),
-                                                ),
-                                                child: Text(
-                                                  '${AppDimensions.fontSize.toInt()}',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headlineMedium!
-                                                      .copyWith(
-                                                        color: Color(
-                                                            ctr.textColor),
-                                                      ),
-                                                  textAlign: TextAlign.center,
+                                                        ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
                                           // color
-                                          GetBuilder<HomePageController>(
-                                            builder: (ctr) => LayoutBuilder(
-                                                builder:
-                                                    (context, constraints) {
-                                              String dots = '';
-                                              int divide = settingsCtr.lang == 'en'? 17: 16;
-                                              for (int i = 0;
-                                                  i <
-                                                      (constraints.constrainWidth() / divide)
-                                                          .floor();
-                                                  i++) {
-                                                dots += '..';
-                                              }
-                                              return RichText(
-                                                  text: TextSpan(children: [
-                                                TextSpan(
-                                                  text: 'C'.tr, style: Theme.of(context)
-                                                      .textTheme
-                                                      .headlineMedium!
-                                                      .copyWith(
-                                                        color: Color(
-                                                            ctr.textColor),
+                                          Expanded(
+                                            child: GetBuilder<HomePageController>(
+                                              builder: (ctr) => LayoutBuilder(
+                                                  builder:
+                                                      (context, constraints) {
+                                                final double dotsWidth = 3.0;
+                                                final int dotsCounter = (constraints.constrainWidth() /(constraints.constrainWidth() / 8.0.wp)).floor();
+                                                return Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                      Text(
+                                                        'C'.tr, style: Theme.of(context)
+                                                            .textTheme
+                                                            .headlineMedium!
+                                                            .copyWith(
+                                                              color: Color(
+                                                                  ctr.textColor),
+                                                            ),
                                                       ),
-                                                ),
-                                                TextSpan(
-                                                  text: dots,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headlineMedium!
-                                                      .copyWith(
-                                                        color: Color(
-                                                            ctr.textColor),
-                                                      )
-                                                      .copyWith(
-                                                          fontSize: 18.0.sp),
-                                                ),
-                                              ]));
-                                            }),
+                                                    ...List.generate(dotsCounter, (index) => Container(
+                                                      width: dotsWidth,
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color:  Color(
+                                                        ctr.textColor),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              }),
+                                            ),
                                           ),
                                           SizedBox(height: 2.0.hp),
                                           // app parts
@@ -404,62 +406,71 @@ class HomePage extends GetView<HomePageController> {
                                           ),
                                           SizedBox(height: 2.0.hp),
                                           // gradient colors
-                                          Container(
-                                            width: 80.0.wp,
-                                            height: 5.0.hp,
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  for (int i = 0; i < 360; i++)
-                                                    HSVColor.fromAHSV(
-                                                            1.0,
-                                                            i.toDouble(),
-                                                            1.0,
-                                                            1.0)
-                                                        .toColor(),
-                                                ],
-                                                stops: [
-                                                  for (int i = 0; i < 360; i++)
-                                                    (i / 360).toDouble()
-                                                ],
-                                              ),
+                                          Expanded(
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Container(
+                                                    height: 5.0.hp,
+                                                    decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                        colors: [
+                                                          for (int i = 0; i < 360; i++)
+                                                            HSVColor.fromAHSV(
+                                                                    1.0,
+                                                                    i.toDouble(),
+                                                                    1.0,
+                                                                    1.0)
+                                                                .toColor(),
+                                                        ],
+                                                        stops: [
+                                                          for (int i = 0; i < 360; i++)
+                                                            (i / 360).toDouble()
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                           SizedBox(height: 2.0.hp),
                                           // slider to change color
                                           GetBuilder<HomePageController>(
-                                            builder: (ctr) => Slider(
-                                              value: ctr.hue,
-                                              activeColor: ctr.tap.isNotEmpty
-                                                  ? HSVColor.fromAHSV(1.0,
-                                                          ctr.hue, 1.0, 1.0)
-                                                      .toColor()
-                                                  : Colors.transparent,
-                                              min: 1.0,
-                                              max: 360.0,
-                                              onChanged: (value) {
-                                                final Color hsvColor =
-                                                    HSVColor.fromAHSV(1.0,
-                                                            value, 1.0, 1.0)
-                                                        .toColor();
-                                                ctr.changeColors(
-                                                  value,
-                                                  hsvColor.value,
-                                                  ctr.tap,
-                                                  settingsCtr.themeMode,
-                                                );
-                                              },
-                                              onChangeEnd: (value) {
-                                                final Color hsvColor =
-                                                    HSVColor.fromAHSV(1.0,
-                                                            value, 1.0, 1.0)
-                                                        .toColor();
-                                                ctr.saveColors(
+                                            builder: (ctr) => Expanded(
+                                              child: Slider(
+                                                value: ctr.hue,
+                                                activeColor: ctr.tap.isNotEmpty
+                                                    ? HSVColor.fromAHSV(1.0,
+                                                            ctr.hue, 1.0, 1.0)
+                                                        .toColor()
+                                                    : Colors.transparent,
+                                                min: 1.0,
+                                                max: 360.0,
+                                                onChanged: (value) {
+                                                  final Color hsvColor =
+                                                      HSVColor.fromAHSV(1.0,
+                                                              value, 1.0, 1.0)
+                                                          .toColor();
+                                                  ctr.changeColors(
                                                     value,
                                                     hsvColor.value,
                                                     ctr.tap,
-                                                    settingsCtr.themeMode);
-                                              },
+                                                    settingsCtr.themeMode,
+                                                  );
+                                                },
+                                                onChangeEnd: (value) {
+                                                  final Color hsvColor =
+                                                      HSVColor.fromAHSV(1.0,
+                                                              value, 1.0, 1.0)
+                                                          .toColor();
+                                                  ctr.saveColors(
+                                                      value,
+                                                      hsvColor.value,
+                                                      ctr.tap,
+                                                      settingsCtr.themeMode);
+                                                },
+                                              ),
                                             ),
                                           ),
                                           // rest theme
@@ -502,7 +513,7 @@ class HomePage extends GetView<HomePageController> {
                                     builder: (ctr) => Container(
                                       width: 100.0.wp,
                                       height: 20.0.hp,
-                                      padding: EdgeInsets.only(top: 2.0.wp, left: settingsCtr.lang == 'en'? 3.0.hp: 0.0.wp, right: settingsCtr.lang == 'ar'? 3.0.hp: 0.0.wp,),
+                                      padding: EdgeInsets.only(top: 2.0.wp, left: settingsCtr.lang == 'en'? 3.0.hp: 0.0.wp, right: settingsCtr.lang == 'ar'? 3.0.hp: 0.0.wp,bottom: 5.0.wp),
                                       decoration: BoxDecoration(
                                           color: Theme.of(context)
                                               .scaffoldBackgroundColor,
@@ -513,34 +524,38 @@ class HomePage extends GetView<HomePageController> {
                                       child: Column(
                                         crossAxisAlignment: settingsCtr.lang == 'en'? CrossAxisAlignment.start: CrossAxisAlignment.end,
                                         children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                '${'Clang'.tr} :',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium,
-                                              ),
-                                            ],
+                                          Expanded(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  '${'Clang'.tr} :',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium,
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                           ...controller.languages.map(
                                                 (e) => GetBuilder<SettingsController>(
                                               builder: (ctr) {
-                                                return RadioListTile(
-                                                  value: e,
-                                                  groupValue: ctr.lang,
-                                                  contentPadding: EdgeInsets.zero,
-                                                  selected: ctr.lang == e,
-                                                  title: Text(
-                                                    e.toUpperCase().tr,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .titleMedium,
+                                                return Expanded(
+                                                  child: RadioListTile(
+                                                    value: e,
+                                                    groupValue: ctr.lang,
+                                                    contentPadding: EdgeInsets.zero,
+                                                    selected: ctr.lang == e,
+                                                    title: Text(
+                                                      e.toUpperCase().tr,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .titleMedium,
+                                                    ),
+                                                    onChanged: (value) {
+                                                      ctr.lang = value as String;
+                                                      // ctr.sortNotes(value);
+                                                    },
                                                   ),
-                                                  onChanged: (value) {
-                                                    ctr.lang = value as String;
-                                                    // ctr.sortNotes(value);
-                                                  },
                                                 );
                                               },
                                             ),
@@ -663,6 +678,6 @@ class HomePage extends GetView<HomePageController> {
           ),
         ),
       ),
-    );
+    ): CircularProgressIndicator();
   }
 }

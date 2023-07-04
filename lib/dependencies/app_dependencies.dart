@@ -5,7 +5,7 @@ import 'package:notes_app/data/sql_database.dart';
 
 import 'package:notes_app/controllers/settings_controller.dart';
 
-Future<void> dependencies() async {
+Future<bool> dependencies() async {
   Get.lazyPut(
           () => HomePageController(
           appRepo: AppRepo(appDatabase: Get.find<AppDatabase>())));
@@ -15,5 +15,8 @@ Future<void> dependencies() async {
   await settingsCtr.getLastThemeMode();
   await settingsCtr.getLastTheme();
   await settingsCtr.getLang();
+  await homePageCtr.readData();
   homePageCtr.getColors(settingsCtr.themeMode);
+  homePageCtr.isLoaded = true;
+  return true;
 }

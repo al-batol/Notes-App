@@ -7,9 +7,10 @@ import 'package:notes_app/helper/router_helper.dart';
 import 'package:notes_app/utils/app_style.dart';
 import 'package:notes_app/utils/lang.dart';
 import 'controllers/settings_controller.dart';
-
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Get.putAsync(() => AppDatabase().initDatabase());
   await dep.dependencies();
   runApp(const MyApp());
@@ -20,6 +21,7 @@ class MyApp extends GetView<SettingsController> {
 
   @override
   Widget build(BuildContext context) {
+    FlutterNativeSplash.remove();
     return GetBuilder<HomePageController>(
       builder: (ctr) => GetMaterialApp(
         debugShowCheckedModeBanner: false,
