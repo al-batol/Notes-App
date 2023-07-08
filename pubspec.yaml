@@ -49,24 +49,27 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: false
-  image_path: "assets/take_notes.png"
+  image_path: "assets/app_photo.png"
   adaptive_icon_background: "#e4e5f1"
   min_sdk_android: 21
 
 # flutter_native_splash-development.yaml
 flutter_native_splash:
   color: "#e4e5f1"
-  image: assets/take_notes.png
+  image: assets/app_photo.png
   color_dark: "#000000"
-  image_dark: assets/take_notes.png
+  image_dark: assets/app_photo.png
+  android_gravity: fill
 
   android_12:
-    image: assets/take_notes.png
+    image: assets/app_photo.png
     icon_background_color: "#e4e5f1"
-    image_dark: assets/take_notes.png
+    image_dark: assets/app_photo.png
     icon_background_color_dark: "#000000"
+    android_gravity: fill
 
   web: false
+  ios: false
 
 
   # The "flutter_lints" package below contains a set of recommended lints to
