@@ -561,7 +561,6 @@ class HomePage extends GetView<HomePageController> {
                                                     ),
                                                     onChanged: (value) {
                                                       ctr.lang = value as String;
-                                                      // ctr.sortNotes(value);
                                                     },
                                                   ),
                                                 );

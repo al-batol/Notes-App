@@ -31,16 +31,6 @@ class SettingsController extends GetxController {
 
   ThemeMode get themeMode => _themeMode;
 
-  // Future<void> getLastThemeMode() async {
-  //   if (await appRepo.getData("theme") != 0) {
-  //     _themeMode = await appRepo.getData("theme") == 1
-  //         ? ThemeMode.light
-  //         : ThemeMode.dark;
-  //   } else {
-  //     _themeMode =
-  //     ThemeMode.system == ThemeMode.light ? ThemeMode.light : ThemeMode.dark;
-  //   }
-  // }
 
   Future<void> getThemeMode() async {
     Brightness brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;

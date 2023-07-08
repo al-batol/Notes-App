@@ -113,19 +113,6 @@ class HomePageController extends GetxController {
     update();
   }
 
-  // int getTheGreaterId() {
-  //   if (_notes.isNotEmpty) {
-  //     int temp = _notes[0].id!;
-  //     for (int i = 0; i < _notes.length; i++) {
-  //       if (temp < _notes[i].id!) {
-  //         temp = _notes[i].id!;
-  //       }
-  //     }
-  //     return temp + 1;
-  //   } else {
-  //     return 1;
-  //   }
-  // }
 
   Future<void> updateDate(int index, String columnName, String newValue) async {
     _notes[index][columnName] = newValue;
