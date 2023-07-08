@@ -18,12 +18,14 @@ class AddOrEditNote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if(MediaQuery.of(context).size.width != 0.0) {
+      AppDimensions.width = MediaQuery.of(context).size.width;
+      AppDimensions.height = MediaQuery.of(context).size.height;
+    }
     if (willEdit) {
       homeCtr.willEditPage(willEdit, index);
     } else {
       homeCtr.willEditPage(willEdit, index);
-      homeCtr.topicEditing.selection = TextSelection.fromPosition(
-          const TextPosition(offset: 0));
     }
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,

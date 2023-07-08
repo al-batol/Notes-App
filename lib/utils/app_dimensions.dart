@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 
 class AppDimensions {
-  static final height = Get.height;
-  static final width = Get.width;
+  static double height = Get.height;
+  static double width = Get.width;
   static const double fontSizeFixed = 16.0;
   static double fontSize = 16.0;
   static double responsiveWidth(double value) {

@@ -45,10 +45,10 @@ class HomePageController extends GetxController {
 
 
   @override
-  void onClose() async {
+  void dispose() async {
     titleEditing.dispose();
     topicEditing.dispose();
-    super.onClose();
+    super.dispose();
   }
 
   late int appBarAndPageColor;
@@ -134,8 +134,9 @@ class HomePageController extends GetxController {
       }
     }
     else {
-      final int fillLines = lines - topicEditing.text.split('\n').length;
-      topicEditing.text += '\n' * fillLines;
+      topicEditing.text = '\n' * lines;
+      topicEditing.selection = TextSelection.fromPosition(
+          const TextPosition(offset: 0));
     }
   }
 

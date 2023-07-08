@@ -31,19 +31,22 @@ class SettingsController extends GetxController {
 
   ThemeMode get themeMode => _themeMode;
 
-  Future<void> getLastThemeMode() async {
-    if (await appRepo.getData("theme") != 0) {
-      _themeMode = await appRepo.getData("theme") == 1
-          ? ThemeMode.light
-          : ThemeMode.dark;
-    }
-  }
+  // Future<void> getLastThemeMode() async {
+  //   if (await appRepo.getData("theme") != 0) {
+  //     _themeMode = await appRepo.getData("theme") == 1
+  //         ? ThemeMode.light
+  //         : ThemeMode.dark;
+  //   } else {
+  //     _themeMode =
+  //     ThemeMode.system == ThemeMode.light ? ThemeMode.light : ThemeMode.dark;
+  //   }
+  // }
 
   Future<void> getThemeMode() async {
     if (await appRepo.getData("theme") == 0) {
-      _themeMode = ThemeMode.system == ThemeMode.light
-          ? ThemeMode.light
-          : ThemeMode.dark;
+      _themeMode = Get.isDarkMode
+          ? ThemeMode.dark
+          : ThemeMode.light;
       await appRepo.setData('theme', _themeMode == ThemeMode.light ? 1 : 2);
     } else if (await appRepo.getData("theme") == 1) {
       _themeMode = ThemeMode.light;

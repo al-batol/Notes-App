@@ -22,6 +22,10 @@ class HomePage extends GetView<HomePageController> {
       if (settingsCtr.themeMode == ThemeMode.dark && e.tr == 'DM'.tr) {
         controller.items[1] = 'LM'.tr;
       }
+      if(MediaQuery.of(context).size.width != 0.0) {
+        AppDimensions.width = MediaQuery.of(context).size.width;
+        AppDimensions.height = MediaQuery.of(context).size.height;
+      }
       return PopupMenuItem(
         value: e,
         child: Text(
@@ -31,7 +35,7 @@ class HomePage extends GetView<HomePageController> {
         ),
       );
     }).toList();
-    return controller.isLoaded ?GetBuilder<HomePageController>(
+    return GetBuilder<HomePageController>(
       builder: (ctr) => AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
           systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
@@ -72,10 +76,10 @@ class HomePage extends GetView<HomePageController> {
                         ),
                       ),
                       SizedBox(width: 18.0.wp),
-                      SizedBox(
-                        width: 10.0.wp,
-                        child: GetBuilder<HomePageController>(
-                          builder: (ctr) => PopupMenuButton(
+                      GetBuilder<HomePageController>(
+                        builder: (ctr) => SizedBox(
+                          width: 10.0.wp,
+                          child: PopupMenuButton(
                             position: PopupMenuPosition.under,
                             color: Theme.of(context).primaryColor,
                             onSelected: (value) {
@@ -678,6 +682,6 @@ class HomePage extends GetView<HomePageController> {
           ),
         ),
       ),
-    ): CircularProgressIndicator();
+    );
   }
 }
