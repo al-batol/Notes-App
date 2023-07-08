@@ -16,15 +16,27 @@ class HomePage extends GetView<HomePageController> {
 
   @override
   Widget build(BuildContext context) {
+    if(MediaQuery.of(context).size.width != 0.0) {
+      AppDimensions.width = MediaQuery.of(context).size.width;
+      AppDimensions.height = MediaQuery.of(context).size.height;
+    }
     SettingsController settingsCtr = Get.find<SettingsController>();
     controller.getColors(settingsCtr.themeMode);
-    final List<PopupMenuItem<String>> items = controller.items.map((String e) {
-      if (settingsCtr.themeMode == ThemeMode.dark && e.tr == 'DM'.tr) {
-        controller.items[1] = 'LM'.tr;
+    List<String> menu = [];
+    for(String item in controller.items) {
+      if(settingsCtr.themeMode == ThemeMode.light) {
+        if(item != 'LM') {
+          menu.add(item);
+        }
+      } else {
+        if(item != 'DM') {
+          menu.add(item);
+        }
       }
-      if(MediaQuery.of(context).size.width != 0.0) {
-        AppDimensions.width = MediaQuery.of(context).size.width;
-        AppDimensions.height = MediaQuery.of(context).size.height;
+    }
+    final List<PopupMenuItem<String>> items = menu.map((String e) {
+      if (settingsCtr.themeMode == ThemeMode.light && e.tr == 'LM'.tr) {
+        controller.items[1] = 'DM'.tr;
       }
       return PopupMenuItem(
         value: e,
@@ -145,15 +157,7 @@ class HomePage extends GetView<HomePageController> {
                                   ),
                                 );
                               } else if (value.toString() ==
-                                  controller.items[1]) {
-                                if (settingsCtr.themeMode == ThemeMode.dark &&
-                                    controller.items[1].tr == 'DM'.tr) {
-                                  controller.items[1] = 'LM';
-                                } else if (settingsCtr.themeMode ==
-                                        ThemeMode.dark &&
-                                    controller.items[1].tr == 'LM'.tr) {
-                                  controller.items[1] = 'DM';
-                                }
+                                  controller.items[1] || value.toString() == controller.items[2]) {
                                 settingsCtr.changeThemeMode();
                                 ctr.getColors(settingsCtr.themeMode);
                               } else if (value.toString() ==

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:notes_app/data/repo.dart';
 import 'package:notes_app/utils/app_style.dart';
@@ -26,8 +27,7 @@ class SettingsController extends GetxController {
   }
   Locale locale = Locale('${Get.deviceLocale}'.substring(0, 2));
 
-  ThemeMode _themeMode =
-      ThemeMode.system == ThemeMode.light ? ThemeMode.light : ThemeMode.dark;
+  late ThemeMode _themeMode;
 
   ThemeMode get themeMode => _themeMode;
 
@@ -43,17 +43,18 @@ class SettingsController extends GetxController {
   // }
 
   Future<void> getThemeMode() async {
+    Brightness brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
     if (await appRepo.getData("theme") == 0) {
-      _themeMode = Get.isDarkMode
-          ? ThemeMode.dark
-          : ThemeMode.light;
+      _themeMode = brightness == Brightness.light
+          ? ThemeMode.light
+          : ThemeMode.dark;
       await appRepo.setData('theme', _themeMode == ThemeMode.light ? 1 : 2);
     } else if (await appRepo.getData("theme") == 1) {
       _themeMode = ThemeMode.light;
     } else if (await appRepo.getData("theme") == 2) {
       _themeMode = ThemeMode.dark;
     } else {
-      _themeMode = ThemeMode.system == ThemeMode.light
+      _themeMode = brightness == Brightness.light
           ? ThemeMode.light
           : ThemeMode.dark;
     }
