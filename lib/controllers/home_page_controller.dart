@@ -42,6 +42,15 @@ class HomePageController extends GetxController {
 
   bool get onDraggable => _onDraggable;
   bool isLoaded = false;
+  bool isLandscape = false;
+  void getOrientation(Orientation orientation) async {
+    if(orientation == Orientation.landscape) {
+      isLandscape = true;
+    }
+    else {
+      isLandscape = false;
+    }
+  }
 
   @override
   void dispose() async {

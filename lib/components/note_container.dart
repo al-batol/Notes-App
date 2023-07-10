@@ -6,36 +6,41 @@ class NoteContainer extends StatelessWidget {
   final String? title;
   final String topic;
   final String formattedTime;
+  final bool isRotated;
 
   const NoteContainer(
-      {Key? key, this.title, required this.topic, required this.formattedTime})
+      {Key? key, this.title, required this.topic, required this.formattedTime, required this.isRotated})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final squareWidth = AppDimensions.width - 12.0.wp;
+    if(MediaQuery.of(context).size.width != 0.0) {
+      AppDimensions.width = MediaQuery.of(context).size.width;
+      AppDimensions.height = MediaQuery.of(context).size.height;
+    }
+    final double square = (AppDimensions.width - 12.0.wp) / 2 ;
+    final double squareR = (AppDimensions.width - 15.0.wp) / 3;
     return Container(
-      width: squareWidth / 2,
-      height: squareWidth / 2,
-      margin: EdgeInsets.all(3.0.wp),
+      margin: isRotated ? EdgeInsets.zero: EdgeInsets.all(3.0.wp),
+      padding: isRotated ? EdgeInsets.all(3.0.wp): EdgeInsets.zero,
       child: Material(
-        borderRadius: BorderRadius.circular(10.0.wp),
+        borderRadius: BorderRadius.circular(isRotated ? 4.0.wp : 10.0.wp),
         child: Stack(
           children: [
             Container(
-              width: squareWidth / 2,
-              height: squareWidth / 2,
+              width: isRotated ? squareR : square,
+              height: isRotated ? squareR : square,
               padding: EdgeInsets.symmetric(horizontal: 3.0.wp),
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(10.0.wp),
+                borderRadius: BorderRadius.circular(isRotated ? 4.0.wp : 10.0.wp),
               ),
               child: Center(
                 child: Text(
                   title!.trim().isEmpty ? topic: title!,
                   maxLines: 3,
                   style: TextStyle(
-                      fontSize: 18.0.sp,
+                      fontSize: isRotated ? 15.0.sp : 18.0.sp,
                       overflow: TextOverflow.ellipsis,
                       color: Theme.of(context).iconTheme.color),
                 ),
@@ -47,7 +52,7 @@ class NoteContainer extends StatelessWidget {
               child: Text(
                 formattedTime,
                 style: TextStyle(
-                    fontSize: 10.0.sp,
+                    fontSize: isRotated ? 6.0.sp : 10.0.sp,
                     color: Theme.of(context).iconTheme.color),
               ),
             ),

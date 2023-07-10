@@ -106,7 +106,7 @@ class Themes {
         color: Color(DarkModeEdit.textColor),
       ),
       bodyLarge: TextStyle(
-        fontSize: AppDimensions.fontSize,
+        fontSize: AppDimensions.fontSize.sp,
         color: Color(DarkModeEdit.textColor),
       ),
       displayLarge: TextStyle(
