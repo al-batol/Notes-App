@@ -202,7 +202,7 @@ class HomePage extends GetView<HomePageController> {
                                   if (controller.isLandscape)
                                     Get.snackbar(
                                       '',
-                                      'Please rotate your phone',
+                                      'RO'.tr + '...',
                                       duration: Duration(seconds: 1),
                                       colorText: Theme.of(context)
                                           .textTheme

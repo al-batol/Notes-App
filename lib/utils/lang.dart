@@ -27,7 +27,8 @@ class AppLanguages extends Translations {
       'RT': 'Rest Theme',
       'Ti': 'Title',
       'AN': 'Add Note',
-      'MO': 'More options'
+      'MO': 'More options',
+      'RO': 'Please rotate your phone',
     },
     'ar': {
       'MN': 'ملاحظاتي',
@@ -53,7 +54,8 @@ class AppLanguages extends Translations {
       'RT': ' تهيئة الثيم',
       'Ti': 'العنوان',
       'AN': 'اضافة ملاحظة',
-      'MO': 'خيارات'
+      'MO': 'خيارات',
+      'RO': 'من فضلك قم بتدوير الهاتف',
     },
   };
 
