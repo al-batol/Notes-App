@@ -30,7 +30,6 @@ class HomePage extends GetView<HomePageController> {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
           overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
     }
-    print(orientation);
     controller.getColors(settingsCtr.themeMode);
     List<String> menu = [];
     for (String item in controller.items) {

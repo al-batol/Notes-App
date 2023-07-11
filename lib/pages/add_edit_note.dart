@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:notes_app/utils/app_dimensions.dart';
 
@@ -9,8 +8,8 @@ import 'package:notes_app/utils/app_style.dart';
 import 'package:notes_app/controllers/settings_controller.dart';
 
 class AddOrEditNote extends StatelessWidget {
-  HomePageController homeCtr = Get.find<HomePageController>();
-  SettingsController settingsCtr = Get.find<SettingsController>();
+  final HomePageController homeCtr = Get.find<HomePageController>();
+  final SettingsController settingsCtr = Get.find<SettingsController>();
   final bool willEdit;
 
   final int index;
@@ -20,39 +19,50 @@ class AddOrEditNote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (MediaQuery.of(context).size.width != 0.0) {
-      AppDimensions.width = MediaQuery.of(context).size.width;
-      AppDimensions.height = MediaQuery.of(context).size.height;
-    }
     if (willEdit) {
       homeCtr.willEditPage(willEdit, index);
     } else {
       homeCtr.willEditPage(willEdit, index);
     }
-    Orientation orientation = MediaQuery.of(context).orientation;
-    homeCtr.getOrientation(orientation);
-    if (homeCtr.isLandscape) {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,
-          overlays: []);
-    } else {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-          overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
-    }
-    if (MediaQuery.viewInsetsOf(context).bottom > 0.0 ||
-        MediaQuery.viewInsetsOf(context).bottomRight > Offset(0, 0) ||
-        MediaQuery.viewInsetsOf(context).bottomLeft > Offset(0, 0)) {
-    }
     return WillPopScope(
       onWillPop: () async {
-        return false;
+        if (MediaQuery.viewInsetsOf(context).bottom > 0.0 ||
+            MediaQuery.viewInsetsOf(context).bottomRight > Offset(0, 0) ||
+            MediaQuery.viewInsetsOf(context).bottomLeft > Offset(0, 0)) {
+          return true;
+        } else {
+          if (homeCtr.titleEditing.text.trim().isEmpty &&
+              homeCtr.topicEditing.text.trim().isEmpty) {
+            return true;
+          } else {
+            if (!willEdit) {
+              await homeCtr.insertData(
+                homeCtr.titleEditing.text,
+                homeCtr.topicEditing.text.trimRight(),
+              );
+            } else {
+              await homeCtr.updateDate(
+                index,
+                'title',
+                homeCtr.titleEditing.text,
+              );
+              await homeCtr.updateDate(
+                index,
+                'topic',
+                homeCtr.topicEditing.text.trimRight(),
+              );
+            }
+            homeCtr.titleEditing.clear();
+            homeCtr.topicEditing.clear();
+            return true;
+          }
+        }
       },
       child: SafeArea(
         top: false,
         bottom: false,
         child: Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          resizeToAvoidBottomInset: false,
-
           body: ListView(
             padding: EdgeInsets.zero,
             children: [
@@ -123,7 +133,10 @@ class AddOrEditNote extends StatelessWidget {
                         child: TextFormField(
                           textAlignVertical: TextAlignVertical.top,
                           controller: homeCtr.titleEditing,
-                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
                               fontSize: homeCtr.isLandscape
                                   ? 11.0.sp
                                   : AppDimensions.fontSizeFixed.sp),
@@ -133,14 +146,14 @@ class AddOrEditNote extends StatelessWidget {
                                 .textTheme
                                 .headlineMedium!
                                 .copyWith(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium!
-                                        .color!
-                                        .withOpacity(0.5),
-                                    fontSize: homeCtr.isLandscape
-                                        ? 11.0.sp
-                                        : AppDimensions.fontSizeFixed.sp),
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium!
+                                    .color!
+                                    .withOpacity(0.5),
+                                fontSize: homeCtr.isLandscape
+                                    ? 11.0.sp
+                                    : AppDimensions.fontSizeFixed.sp),
                             focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: Colors.transparent,
@@ -168,7 +181,6 @@ class AddOrEditNote extends StatelessWidget {
                     minLines: homeCtr.lines - 1,
                     maxLines: null,
                     autofocus: willEdit ? false : true,
-                    mouseCursor: MaterialStateMouseCursor.textable,
                     onChanged: (value) {
                       if (homeCtr.topicEditing.text.split('\n').length <
                           homeCtr.lines * (index + 1)) {
@@ -177,8 +189,9 @@ class AddOrEditNote extends StatelessWidget {
                         final int fillLines = homeCtr.lines -
                             homeCtr.topicEditing.text.split('\n').length;
                         homeCtr.topicEditing.text += '\n' * fillLines;
-                        homeCtr.topicEditing.selection = TextSelection.fromPosition(
-                            TextPosition(offset: lastPosition));
+                        homeCtr.topicEditing.selection =
+                            TextSelection.fromPosition(
+                                TextPosition(offset: lastPosition));
                       } else {}
                     },
                     style: Theme.of(context)

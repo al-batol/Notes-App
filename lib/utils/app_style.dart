@@ -40,7 +40,7 @@ class LightModeEdit {
 class Themes {
   static ThemeData customLightMode = ThemeData().copyWith(
     primaryColor: Color(LightModeEdit.appBarAndPageColor),
-    colorScheme: ColorScheme.fromSwatch(accentColor: Color(LightModeEdit.appBarAndPageColor), brightness: Brightness.light,),
+    colorScheme: ColorScheme.fromSwatch(accentColor: Color(LightModeEdit.appBarAndPageColor), brightness: Brightness.light),
     radioTheme: const RadioThemeData(
       fillColor: MaterialStatePropertyAll(Colors.red),
     ),
@@ -83,7 +83,7 @@ class Themes {
 
   static ThemeData customDarkMode =  ThemeData().copyWith(
     primaryColor: Color(DarkModeEdit.appBarAndPageColor),
-    colorScheme: ColorScheme.fromSwatch(accentColor: Color(DarkModeEdit.appBarAndPageColor), brightness: Brightness.dark,),
+    colorScheme: ColorScheme.fromSwatch(accentColor: Color(DarkModeEdit.appBarAndPageColor), brightness: Brightness.light),
     radioTheme: const RadioThemeData(
       fillColor: MaterialStatePropertyAll(Colors.red),
     ),
