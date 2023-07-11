@@ -770,6 +770,11 @@ class HomePage extends GetView<HomePageController> {
                                     crossAxisCount:
                                         controller.isLandscape ? 3 : 2),
                             itemBuilder: (BuildContext context, int index) {
+                              final List<String> arabicMonths = ['ياناير', 'فبراير', 'مارس', 'ابريل', 'مايو', 'يونيو', 'يوليو', 'اغسطس', 'سبتمبر', 'اوكتوبر', 'نوفمبر', 'ديسمبر'];
+                              final List<String> englishMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'];
+                              final int monthNo = englishMonths.indexOf(ctr.notes[index].formattedTime!.substring(0, 3));
+                              final String arabicFormat = arabicMonths[monthNo];
+                              final String formattedDate = settingsCtr.lang == 'ar' ? ctr.notes[index].formattedTime!.replaceRange(0, 3, arabicFormat)! : ctr.notes[index].formattedTime!;
                               return LongPressDraggable(
                                 data: ctr.notes[index],
                                 onDragStarted: () {
@@ -800,8 +805,7 @@ class HomePage extends GetView<HomePageController> {
                                   child: NoteContainer(
                                     title: ctr.notes[index].title,
                                     topic: ctr.notes[index].topic!,
-                                    formattedTime:
-                                        ctr.notes[index].formattedTime!,
+                                    formattedTime: formattedDate,
                                     isRotated:
                                         controller.isLandscape ? true : false,
                                   ),
