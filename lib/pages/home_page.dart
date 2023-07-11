@@ -251,7 +251,14 @@ class HomePage extends GetView<HomePageController> {
                                                       'ET'.tr,
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .headlineLarge!.copyWith(fontSize: controller.isLandscape ? 14.0.sp : 20.0.sp, color: Color(ctr.titleAndButtonsColor)),
+                                                          .headlineLarge!
+                                                          .copyWith(
+                                                              fontSize: controller
+                                                                      .isLandscape
+                                                                  ? 14.0.sp
+                                                                  : 20.0.sp,
+                                                              color: Color(ctr
+                                                                  .titleAndButtonsColor)),
                                                     ),
                                                   ),
                                                 ),
@@ -265,8 +272,10 @@ class HomePage extends GetView<HomePageController> {
                                                       LayoutBuilder(builder:
                                                           (context,
                                                               constraints) {
-                                                    final double dotsWidth = ctr.isLandscape ? 0
-                                                         :1.0.wp;
+                                                    final double dotsWidth =
+                                                        ctr.isLandscape
+                                                            ? 0
+                                                            : 1.0.wp;
                                                     final int dotsCounter =
                                                         (constraints.constrainWidth() /
                                                                 (constraints
@@ -284,8 +293,14 @@ class HomePage extends GetView<HomePageController> {
                                                                   context)
                                                               .textTheme
                                                               .headlineMedium!
-                                                              .copyWith(fontSize: controller.isLandscape ? 12.0.sp : 16.0.sp, color: Color(ctr.textColor) ),
-                                                              ),
+                                                              .copyWith(
+                                                                  fontSize: controller
+                                                                          .isLandscape
+                                                                      ? 12.0.sp
+                                                                      : 16.0.sp,
+                                                                  color: Color(ctr
+                                                                      .textColor)),
+                                                        ),
                                                         ...List.generate(
                                                           dotsCounter,
                                                           (index) => Container(
@@ -371,9 +386,10 @@ class HomePage extends GetView<HomePageController> {
                                                         ctr.updateFontSize(
                                                             steps[
                                                                 value.toInt()]);
-                                                        addEditCtr.calculatePageSize(
-                                                            AppDimensions
-                                                                .fontSize);
+                                                        addEditCtr
+                                                            .calculatePageSize(
+                                                                AppDimensions
+                                                                    .fontSize);
                                                       },
                                                     );
                                                   },
@@ -402,7 +418,13 @@ class HomePage extends GetView<HomePageController> {
                                                         style: Theme.of(context)
                                                             .textTheme
                                                             .headlineMedium!
-                                                            .copyWith(fontSize: controller.isLandscape ? 12.0.sp : 16.0.sp, color: Color(ctr.textColor) ),
+                                                            .copyWith(
+                                                                fontSize: controller
+                                                                        .isLandscape
+                                                                    ? 12.0.sp
+                                                                    : 16.0.sp,
+                                                                color: Color(ctr
+                                                                    .textColor)),
                                                         textAlign:
                                                             TextAlign.center,
                                                       ),
@@ -418,8 +440,10 @@ class HomePage extends GetView<HomePageController> {
                                                       LayoutBuilder(builder:
                                                           (context,
                                                               constraints) {
-                                                            final double dotsWidth = ctr.isLandscape ? 0
-                                                                :1.0.wp;
+                                                    final double dotsWidth =
+                                                        ctr.isLandscape
+                                                            ? 0
+                                                            : 1.0.wp;
                                                     final int dotsCounter =
                                                         (constraints.constrainWidth() /
                                                                 (constraints
@@ -437,7 +461,13 @@ class HomePage extends GetView<HomePageController> {
                                                                   context)
                                                               .textTheme
                                                               .headlineMedium!
-                                                              .copyWith(fontSize: controller.isLandscape ? 12.0.sp : 16.0.sp, color: Color(ctr.textColor) ),
+                                                              .copyWith(
+                                                                  fontSize: controller
+                                                                          .isLandscape
+                                                                      ? 12.0.sp
+                                                                      : 16.0.sp,
+                                                                  color: Color(ctr
+                                                                      .textColor)),
                                                         ),
                                                         ...List.generate(
                                                           dotsCounter,
@@ -610,8 +640,14 @@ class HomePage extends GetView<HomePageController> {
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .titleMedium!
-                                                          .copyWith(fontSize: controller.isLandscape ? 7.0.sp : 14.0.sp,  color: Color(ctr.textColor),
-                                                    ),
+                                                          .copyWith(
+                                                            fontSize: controller
+                                                                    .isLandscape
+                                                                ? 7.0.sp
+                                                                : 14.0.sp,
+                                                            color: Color(
+                                                                ctr.textColor),
+                                                          ),
                                                     ),
                                                   ),
                                                 ),
@@ -698,6 +734,44 @@ class HomePage extends GetView<HomePageController> {
                                       ),
                                     ),
                                   );
+                                } else if (value.toString() ==
+                                    controller.items[5]) {
+                                  Get.dialog(Center(
+                                    child: Container(
+                                      width: controller.isLandscape
+                                          ? 95.0.hp
+                                          : 95.0.wp,
+                                      height: controller.isLandscape
+                                          ? 60.0.hp
+                                          : 60.0.wp,
+                                      padding: EdgeInsets.all(
+                                          controller.isLandscape
+                                              ? 2.0.hp
+                                              : 2.0.wp),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor,
+                                        borderRadius: BorderRadius.circular(
+                                            controller.isLandscape
+                                                ? AppDimensions.responsiveWidth(
+                                                    50)
+                                                : AppDimensions.responsiveWidth(
+                                                    25)),
+                                      ),
+                                      child: Center(
+                                          child: Text(
+                                        'D'.tr,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium!
+                                            .copyWith(
+                                                fontSize: controller.isLandscape
+                                                    ? 7.0.sp
+                                                    : 14.0.sp),
+                                        textAlign: TextAlign.center,
+                                      )),
+                                    ),
+                                  ));
                                 }
                               },
                               shape: RoundedRectangleBorder(
@@ -756,7 +830,9 @@ class HomePage extends GetView<HomePageController> {
                             child: Center(
                               child: CustomPaint(
                                 painter: RPSCustomPainter(context: context),
-                                size: controller.isLandscape ?Size(90.0.hp, (90.0.hp * 1).toDouble()) : Size(90.0.wp, (90.0.wp * 1).toDouble()),
+                                size: controller.isLandscape
+                                    ? Size(90.0.hp, (90.0.hp * 1).toDouble())
+                                    : Size(90.0.wp, (90.0.wp * 1).toDouble()),
                               ),
                             ),
                           )
@@ -770,11 +846,43 @@ class HomePage extends GetView<HomePageController> {
                                     crossAxisCount:
                                         controller.isLandscape ? 3 : 2),
                             itemBuilder: (BuildContext context, int index) {
-                              final List<String> arabicMonths = ['ياناير', 'فبراير', 'مارس', 'ابريل', 'مايو', 'يونيو', 'يوليو', 'اغسطس', 'سبتمبر', 'اوكتوبر', 'نوفمبر', 'ديسمبر'];
-                              final List<String> englishMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'];
-                              final int monthNo = englishMonths.indexOf(ctr.notes[index].formattedTime!.substring(0, 3));
+                              final List<String> arabicMonths = [
+                                'ياناير',
+                                'فبراير',
+                                'مارس',
+                                'ابريل',
+                                'مايو',
+                                'يونيو',
+                                'يوليو',
+                                'اغسطس',
+                                'سبتمبر',
+                                'اوكتوبر',
+                                'نوفمبر',
+                                'ديسمبر'
+                              ];
+                              final List<String> englishMonths = [
+                                'Jan',
+                                'Feb',
+                                'Mar',
+                                'Apr',
+                                'May',
+                                'Jun',
+                                'Jul',
+                                'Aug',
+                                'Sep',
+                                'Oct',
+                                'Nov',
+                                'Des'
+                              ];
+                              final int monthNo = englishMonths.indexOf(ctr
+                                  .notes[index].formattedTime!
+                                  .substring(0, 3));
                               final String arabicFormat = arabicMonths[monthNo];
-                              final String formattedDate = settingsCtr.lang == 'ar' ? ctr.notes[index].formattedTime!.replaceRange(0, 3, arabicFormat)! : ctr.notes[index].formattedTime!;
+                              final String formattedDate =
+                                  settingsCtr.lang == 'ar'
+                                      ? ctr.notes[index].formattedTime!
+                                          .replaceRange(0, 3, arabicFormat)!
+                                      : ctr.notes[index].formattedTime!;
                               return LongPressDraggable(
                                 data: ctr.notes[index],
                                 onDragStarted: () {
@@ -799,8 +907,10 @@ class HomePage extends GetView<HomePageController> {
                                 ),
                                 child: GestureDetector(
                                   onTap: () {
-                                    addEditCtr.willEditPage(true, ctr.notes[index]);
-                                    Get.toNamed(AppRoutes.getEditNote(true, index));
+                                    addEditCtr.willEditPage(
+                                        true, ctr.notes[index]);
+                                    Get.toNamed(
+                                        AppRoutes.getEditNote(true, index));
                                   },
                                   child: NoteContainer(
                                     title: ctr.notes[index].title,

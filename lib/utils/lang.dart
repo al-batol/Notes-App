@@ -29,6 +29,8 @@ class AppLanguages extends Translations {
       'AN': 'Add Note',
       'MO': 'More options',
       'RO': 'Please rotate your phone',
+      'A': 'About',
+      'D': 'This app developed by Mohammed Al-batol,\nit is a useful tool for organizing and keeping track of notes and information. With this app, users can easily create, edit, and organize notes on their mobile devices.'
     },
     'ar': {
       'MN': 'ملاحظاتي',
@@ -56,6 +58,8 @@ class AppLanguages extends Translations {
       'AN': 'اضافة ملاحظة',
       'MO': 'خيارات',
       'RO': 'من فضلك قم بتدوير الهاتف',
+      'A': 'حول',
+      'D': 'تم تطوير هذا التطبيق بواسطة محمد البتول',
     },
   };
 

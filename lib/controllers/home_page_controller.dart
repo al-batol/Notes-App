@@ -124,7 +124,7 @@ class HomePageController extends GetxController {
     update();
   }
 
-  final List<String> items = ['S', 'LM', 'DM', 'Se', 'CL'];
+  final List<String> items = ['S', 'LM', 'DM', 'Se', 'CL', 'A'];
 
   final List<String> sortBy = ['ASC', 'DESC'];
   String _sort = 'ASC';
