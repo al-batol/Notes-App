@@ -25,7 +25,7 @@ class SettingsController extends GetxController {
     Get.updateLocale(Locale(lang));
     update();
   }
-  Locale locale = Locale('${Get.deviceLocale}'.substring(0, 2));
+  late Locale locale;
 
   late ThemeMode _themeMode;
 
@@ -104,7 +104,7 @@ class SettingsController extends GetxController {
   }
 
   Future<void> getLang() async {
-    if(locale != 'en' && locale != 'ar') {
+    if(_lang != 'en' && _lang != 'ar') {
       locale = Locale('en');
       _lang = 'en';
     }

@@ -15,11 +15,9 @@ Future<void> dependencies() async {
   Get.lazyPut(() => AddEditCtr());
   SettingsController settingsCtr = Get.find<SettingsController>();
   HomePageController homePageCtr = Get.find<HomePageController>();
-  AddEditCtr addEditCtr = Get.find<AddEditCtr>();
   await settingsCtr..getThemeMode();
   await settingsCtr.getLastTheme();
   await settingsCtr.getLang();
   await homePageCtr.readData();
-  addEditCtr.calculatePageSize(AppDimensions.fontSize);
   homePageCtr.getColors(settingsCtr.themeMode);
 }

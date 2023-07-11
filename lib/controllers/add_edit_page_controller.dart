@@ -17,8 +17,8 @@ class AddEditCtr extends GetxController {
     super.dispose();
   }
 
-  void willEditPage(bool willEdit, NoteModel? note) {
-    calculatePageSize(AppDimensions.fontSize);
+  void willEditPage(bool willEdit, NoteModel? note, bool isLandscape) {
+    calculatePageSize(AppDimensions.fontSize, isLandscape);
     if (willEdit) {
       titleEditing.text = note!.title!;
       topicEditing.text = note.topic!;
@@ -33,8 +33,13 @@ class AddEditCtr extends GetxController {
     }
   }
 
-  void calculatePageSize(double fonSize) {
-    lines = (AppDimensions.height / (AppDimensions.fontSize * 2)).round();
+  void calculatePageSize(double fonSize, bool isLandscape) {
+    if(isLandscape) {
+      lines = (AppDimensions.width / (AppDimensions.fontSize * 2)).floor();
+      return;
+    } else {
+      lines = (AppDimensions.height / (AppDimensions.fontSize * 2)).ceil();
+    }
   }
 
   Future<void> checkFields(BuildContext context, HomePageController homeCtr,

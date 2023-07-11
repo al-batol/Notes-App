@@ -23,6 +23,7 @@ class HomePage extends GetView<HomePageController> {
     if (MediaQuery.of(context).size.width != 0.0) {
       AppDimensions.width = MediaQuery.of(context).size.width;
       AppDimensions.height = MediaQuery.of(context).size.height;
+      addEditCtr.calculatePageSize(AppDimensions.fontSize, controller.isLandscape);
     }
     Orientation orientation = MediaQuery.of(context).orientation;
     controller.getOrientation(orientation);
@@ -389,7 +390,7 @@ class HomePage extends GetView<HomePageController> {
                                                         addEditCtr
                                                             .calculatePageSize(
                                                                 AppDimensions
-                                                                    .fontSize);
+                                                                    .fontSize, controller.isLandscape);
                                                       },
                                                     );
                                                   },
@@ -907,7 +908,7 @@ class HomePage extends GetView<HomePageController> {
                                 child: GestureDetector(
                                   onTap: () {
                                     addEditCtr.willEditPage(
-                                        true, ctr.notes[index]);
+                                        true, ctr.notes[index], controller.isLandscape);
                                     Get.toNamed(
                                         AppRoutes.getEditNote(true, index));
                                   },
@@ -934,7 +935,7 @@ class HomePage extends GetView<HomePageController> {
                         .floatingActionButtonTheme
                         .backgroundColor,
                 onPressed: () {
-                  addEditCtr.willEditPage(false, null);
+                  addEditCtr.willEditPage(false, null, ctr.isLandscape);
                   Get.toNamed(AppRoutes.getAddNote());
                 },
                 tooltip: 'AN'.tr,
