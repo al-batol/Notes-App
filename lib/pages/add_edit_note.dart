@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:notes_app/controllers/add_edit_page_controller.dart';
 import 'package:notes_app/utils/app_dimensions.dart';
 
 import 'package:notes_app/controllers/home_page_controller.dart';
@@ -7,9 +8,9 @@ import 'package:notes_app/utils/app_style.dart';
 
 import 'package:notes_app/controllers/settings_controller.dart';
 
-class AddOrEditNote extends StatelessWidget {
-  final HomePageController homeCtr = Get.find<HomePageController>();
+class AddOrEditNote extends GetView<AddEditCtr> {
   final SettingsController settingsCtr = Get.find<SettingsController>();
+  final HomePageController homeCtr = Get.find<HomePageController>();
   final bool willEdit;
 
   final int index;
@@ -19,11 +20,6 @@ class AddOrEditNote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (willEdit) {
-      homeCtr.willEditPage(willEdit, index);
-    } else {
-      homeCtr.willEditPage(willEdit, index);
-    }
     return WillPopScope(
       onWillPop: () async {
         if (MediaQuery.viewInsetsOf(context).bottom > 0.0 ||
@@ -31,36 +27,13 @@ class AddOrEditNote extends StatelessWidget {
             MediaQuery.viewInsetsOf(context).bottomLeft > Offset(0, 0)) {
           return true;
         } else {
-          if (homeCtr.titleEditing.text.trim().isEmpty &&
-              homeCtr.topicEditing.text.trim().isEmpty) {
+          await controller.checkFields(context, homeCtr, willEdit, index);
             return true;
-          } else {
-            if (!willEdit) {
-              await homeCtr.insertData(
-                homeCtr.titleEditing.text,
-                homeCtr.topicEditing.text.trimRight(),
-              );
-            } else {
-              await homeCtr.updateDate(
-                index,
-                'title',
-                homeCtr.titleEditing.text,
-              );
-              await homeCtr.updateDate(
-                index,
-                'topic',
-                homeCtr.topicEditing.text.trimRight(),
-              );
-            }
-            homeCtr.titleEditing.clear();
-            homeCtr.topicEditing.clear();
-            return true;
-          }
         }
       },
       child: SafeArea(
-        top: false,
-        bottom: false,
+        top: homeCtr.isLandscape ? true : false,
+        bottom: homeCtr.isLandscape ? true : false,
         child: Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: ListView(
@@ -89,31 +62,8 @@ class AddOrEditNote extends StatelessWidget {
                         height: homeCtr.isLandscape ? 25.0.hp : 10.0.hp,
                         child: IconButton(
                           onPressed: () async {
-                            if (homeCtr.titleEditing.text.trim().isEmpty &&
-                                homeCtr.topicEditing.text.trim().isEmpty) {
-                              Get.back();
-                            } else {
-                              if (!willEdit) {
-                                await homeCtr.insertData(
-                                  homeCtr.titleEditing.text,
-                                  homeCtr.topicEditing.text.trimRight(),
-                                );
-                              } else {
-                                await homeCtr.updateDate(
-                                  index,
-                                  'title',
-                                  homeCtr.titleEditing.text,
-                                );
-                                await homeCtr.updateDate(
-                                  index,
-                                  'topic',
-                                  homeCtr.topicEditing.text.trimRight(),
-                                );
-                              }
-                              homeCtr.titleEditing.clear();
-                              homeCtr.topicEditing.clear();
-                              Get.back();
-                            }
+                            await controller.checkFields(context, homeCtr, willEdit, index);
+                            Get.back();
                           },
                           icon: Icon(
                             Icons.arrow_back,
@@ -132,7 +82,7 @@ class AddOrEditNote extends StatelessWidget {
                         ),
                         child: TextFormField(
                           textAlignVertical: TextAlignVertical.top,
-                          controller: homeCtr.titleEditing,
+                          controller: controller.titleEditing,
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge!
@@ -176,20 +126,20 @@ class AddOrEditNote extends StatelessWidget {
                 builder: (ctr) => Container(
                   width: 80.0.wp,
                   child: TextFormField(
-                    controller: homeCtr.topicEditing,
+                    controller: controller.topicEditing,
                     cursorColor: Color(DarkMode.cursorColor),
-                    minLines: homeCtr.lines - 1,
+                    minLines: controller.lines - 1,
                     maxLines: null,
                     autofocus: willEdit ? false : true,
                     onChanged: (value) {
-                      if (homeCtr.topicEditing.text.split('\n').length <
-                          homeCtr.lines * (index + 1)) {
+                      if (controller.topicEditing.text.split('\n').length <
+                          controller.lines * (index + 1)) {
                         final lastPosition =
-                            homeCtr.topicEditing.selection.baseOffset;
-                        final int fillLines = homeCtr.lines -
-                            homeCtr.topicEditing.text.split('\n').length;
-                        homeCtr.topicEditing.text += '\n' * fillLines;
-                        homeCtr.topicEditing.selection =
+                            controller.topicEditing.selection.baseOffset;
+                        final int fillLines = controller.lines -
+                            controller.topicEditing.text.split('\n').length;
+                        controller.topicEditing.text += '\n' * fillLines;
+                        controller.topicEditing.selection =
                             TextSelection.fromPosition(
                                 TextPosition(offset: lastPosition));
                       } else {}

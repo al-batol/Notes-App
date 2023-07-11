@@ -16,10 +16,6 @@ class HomePageController extends GetxController {
 
   List<NoteModel> get notes => _notes;
 
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final TextEditingController titleEditing = TextEditingController();
-  final TextEditingController topicEditing = TextEditingController();
-
   final TapDownDetails tapDownDetails = TapDownDetails();
   int _pagesCounter = 1;
 
@@ -43,20 +39,13 @@ class HomePageController extends GetxController {
   bool get onDraggable => _onDraggable;
   bool isLoaded = false;
   bool isLandscape = false;
+
   void getOrientation(Orientation orientation) async {
-    if(orientation == Orientation.landscape) {
+    if (orientation == Orientation.landscape) {
       isLandscape = true;
-    }
-    else {
+    } else {
       isLandscape = false;
     }
-  }
-
-  @override
-  void dispose() async {
-    titleEditing.dispose();
-    topicEditing.dispose();
-    super.dispose();
   }
 
   late int appBarAndPageColor;
@@ -83,7 +72,6 @@ class HomePageController extends GetxController {
         await appRepo.readData(SqlQueries.readDataSql());
     _notes.addAll(allNotes.map((e) => NoteModel.fromJson(e)).toList());
     await getSortedData();
-    calculatePageSize(AppDimensions.fontSize);
   }
 
   Future<void> getSortedData() async {
@@ -91,15 +79,16 @@ class HomePageController extends GetxController {
       appRepo.setData('sort', _sort == sortBy[0] ? 1 : 2);
     } else {
       _sort = await appRepo.getData('sort') == 1 ? sortBy[0] : sortBy[1];
-      if(await appRepo.getData('sort') == 1 ) {
+      if (await appRepo.getData('sort') == 1) {
         sortNotes(_sort);
-      } else if(await appRepo.getData('sort') == 2) {
+      } else if (await appRepo.getData('sort') == 2) {
         sortNotes(_sort);
       }
     }
   }
 
   int notesNumber = 1;
+
   Future<void> insertData(String title, String topic) async {
     DateFormat format = DateFormat('MMM d, yyyy');
     DateTime timeStamp = DateTime.now();
@@ -122,7 +111,6 @@ class HomePageController extends GetxController {
     update();
   }
 
-
   Future<void> updateDate(int index, String columnName, String newValue) async {
     _notes[index][columnName] = newValue;
     await appRepo.updateData(
@@ -134,23 +122,6 @@ class HomePageController extends GetxController {
     _notes.removeWhere((element) => element.id == id);
     await appRepo.deleteData(SqlQueries.deleteDataSql(id));
     update();
-  }
-
-  void willEditPage(bool willEdit, int index) {
-    calculatePageSize(AppDimensions.fontSize);
-    if (willEdit) {
-      NoteModel note = _notes[index];
-      titleEditing.text = note.title!;
-      topicEditing.text = note.topic!;
-      if (topicEditing.text.split('\n').length < lines) {
-        final int fillLines = lines - topicEditing.text.split('\n').length;
-        topicEditing.text += '\n' * fillLines;
-      }
-    } else {
-      topicEditing.text = '\n' * lines;
-      topicEditing.selection =
-          TextSelection.fromPosition(const TextPosition(offset: 0));
-    }
   }
 
   final List<String> items = ['S', 'LM', 'DM', 'Se', 'CL'];
@@ -413,9 +384,5 @@ class HomePageController extends GetxController {
       willRest: true,
     );
     getColors(themeMode);
-  }
-
-  void calculatePageSize(double fonSize) {
-    lines = (AppDimensions.height / (AppDimensions.fontSize * 2)).round();
   }
 }

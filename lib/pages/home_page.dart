@@ -11,12 +11,15 @@ import 'package:notes_app/models/note_model.dart';
 
 import 'package:notes_app/controllers/settings_controller.dart';
 
+import 'package:notes_app/controllers/add_edit_page_controller.dart';
+
 class HomePage extends GetView<HomePageController> {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     SettingsController settingsCtr = Get.find<SettingsController>();
+    AddEditCtr addEditCtr = Get.find<AddEditCtr>();
     if (MediaQuery.of(context).size.width != 0.0) {
       AppDimensions.width = MediaQuery.of(context).size.width;
       AppDimensions.height = MediaQuery.of(context).size.height;
@@ -368,7 +371,7 @@ class HomePage extends GetView<HomePageController> {
                                                         ctr.updateFontSize(
                                                             steps[
                                                                 value.toInt()]);
-                                                        ctr.calculatePageSize(
+                                                        addEditCtr.calculatePageSize(
                                                             AppDimensions
                                                                 .fontSize);
                                                       },
@@ -791,8 +794,8 @@ class HomePage extends GetView<HomePageController> {
                                 ),
                                 child: GestureDetector(
                                   onTap: () {
-                                    Get.toNamed(
-                                        AppRoutes.getEditNote(true, index));
+                                    addEditCtr.willEditPage(true, ctr.notes[index]);
+                                    Get.toNamed(AppRoutes.getEditNote(true, index));
                                   },
                                   child: NoteContainer(
                                     title: ctr.notes[index].title,
@@ -818,6 +821,7 @@ class HomePage extends GetView<HomePageController> {
                         .floatingActionButtonTheme
                         .backgroundColor,
                 onPressed: () {
+                  addEditCtr.willEditPage(false, null);
                   Get.toNamed(AppRoutes.getAddNote());
                 },
                 tooltip: 'AN'.tr,
