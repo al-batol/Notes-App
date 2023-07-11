@@ -126,23 +126,23 @@ class HomePage extends GetView<HomePageController> {
                                     exitBottomSheetDuration:
                                         const Duration(milliseconds: 150),
                                     Container(
-                                      width: 100.0.wp,
-                                      height: 20.0.hp,
+                                      width: controller.isLandscape ? 100.0.hp : 100.0.wp,
+                                      height: controller.isLandscape ? 20.0.wp : 20.0.hp,
                                       padding: EdgeInsets.only(
-                                          top: 2.0.wp,
+                                          top: controller.isLandscape ? 2.0.hp : 2.0.wp,
                                           left: settingsCtr.lang == 'en'
-                                              ? 3.0.hp
+                                              ? controller.isLandscape ? 5.0.wp : 3.0.hp
                                               : 0.0.wp,
                                           right: settingsCtr.lang == 'ar'
-                                              ? 3.0.hp
+                                              ? controller.isLandscape ? 3.0.wp : 3.0.hp
                                               : 0.0.wp,
-                                          bottom: 5.0.wp),
+                                          bottom: controller.isLandscape ? 6.0.hp : 5.0.wp),
                                       decoration: BoxDecoration(
                                           color: Theme.of(context)
                                               .scaffoldBackgroundColor,
                                           borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(10.0.wp),
-                                            topRight: Radius.circular(10.0.wp),
+                                            topLeft: Radius.circular(controller.isLandscape ? 10.0.hp :  10.0.wp),
+                                            topRight: Radius.circular(controller.isLandscape ? 10.0.hp :  10.0.wp),
                                           )),
                                       child: Column(
                                         crossAxisAlignment:
@@ -158,7 +158,7 @@ class HomePage extends GetView<HomePageController> {
                                                   'OB'.tr,
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .bodyMedium,
+                                                      .bodyMedium!.copyWith(fontSize: controller.isLandscape ? 10.0.sp : 16.0.sp),
                                                 ),
                                               ],
                                             ),
@@ -178,7 +178,7 @@ class HomePage extends GetView<HomePageController> {
                                                       e.tr,
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .titleMedium,
+                                                          .titleMedium!.copyWith(fontSize: controller.isLandscape ? 8.0.sp : 14.0.sp),
                                                     ),
                                                     onChanged: (value) {
                                                       ctr.sort =
@@ -666,24 +666,23 @@ class HomePage extends GetView<HomePageController> {
                                         const Duration(milliseconds: 150),
                                     GetBuilder<SettingsController>(
                                       builder: (ctr) => Container(
-                                        width: 100.0.wp,
-                                        height: 20.0.hp,
+                                        width: controller.isLandscape ? 100.0.hp : 100.0.wp,
+                                        height: controller.isLandscape ? 20.0.wp : 20.0.hp,
                                         padding: EdgeInsets.only(
-                                            top: 2.0.wp,
+                                            top: controller.isLandscape ? 2.0.hp : 2.0.wp,
                                             left: settingsCtr.lang == 'en'
-                                                ? 3.0.hp
+                                                ? controller.isLandscape ? 5.0.wp : 3.0.hp
                                                 : 0.0.wp,
                                             right: settingsCtr.lang == 'ar'
-                                                ? 3.0.hp
+                                                ? controller.isLandscape ? 3.0.wp : 3.0.hp
                                                 : 0.0.wp,
-                                            bottom: 5.0.wp),
+                                            bottom: controller.isLandscape ? 6.0.hp : 5.0.wp),
                                         decoration: BoxDecoration(
                                             color: Theme.of(context)
                                                 .scaffoldBackgroundColor,
                                             borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10.0.wp),
-                                              topRight:
-                                                  Radius.circular(10.0.wp),
+                                                topLeft: Radius.circular(controller.isLandscape ? 10.0.hp :  10.0.wp),
+                                                topRight: Radius.circular(controller.isLandscape ? 10.0.hp :  10.0.wp),
                                             )),
                                         child: Column(
                                           crossAxisAlignment:
@@ -698,7 +697,7 @@ class HomePage extends GetView<HomePageController> {
                                                     '${'Clang'.tr} :',
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .bodyMedium,
+                                                        .bodyMedium!.copyWith(fontSize: controller.isLandscape ? 10.0.sp : 16.0.sp),
                                                   ),
                                                 ],
                                               ),
@@ -718,7 +717,7 @@ class HomePage extends GetView<HomePageController> {
                                                         e.toUpperCase().tr,
                                                         style: Theme.of(context)
                                                             .textTheme
-                                                            .titleMedium,
+                                                            .titleMedium!.copyWith(fontSize: controller.isLandscape ? 8.0.sp : 14.0.sp),
                                                       ),
                                                       onChanged: (value) {
                                                         ctr.lang =
