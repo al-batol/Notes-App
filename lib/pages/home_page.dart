@@ -756,7 +756,7 @@ class HomePage extends GetView<HomePageController> {
                             child: Center(
                               child: CustomPaint(
                                 painter: RPSCustomPainter(context: context),
-                                size: Size(90.0.wp, (90.0.wp * 1).toDouble()),
+                                size: controller.isLandscape ?Size(90.0.hp, (90.0.hp * 1).toDouble()) : Size(90.0.wp, (90.0.wp * 1).toDouble()),
                               ),
                             ),
                           )
